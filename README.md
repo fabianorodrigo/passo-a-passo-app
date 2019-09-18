@@ -1,2 +1,3 @@
 # passo-a-passo-app
-Mantenedor de base de conhecimento de procedimentos técnico-administrativos institucionais
+
+[![LoopBack](https://github.com/strongloop/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-@2x.png)](http://loopback.io/)
