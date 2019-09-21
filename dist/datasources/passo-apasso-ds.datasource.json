@@ -1,11 +1,11 @@
 {
     "name": "passoApassoDS",
     "connector": "mongodb",
-    "url": "mongodb://admin:admin@localhost:27017/passo-a-passo",
+    "url": "mongodb://passo-a-passo:passo-a-passo@localhost:27017/passo-a-passo",
     "host": "",
     "port": 0,
-    "user": "",
-    "password": "",
-    "database": "",
+    "user": "passo-a-passo",
+    "password": "passo-a-passo",
+    "database": "passo-a-passo",
     "useNewUrlParser": true
 }
