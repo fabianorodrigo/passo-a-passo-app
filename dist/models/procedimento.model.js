@@ -67,7 +67,7 @@ __decorate([
 __decorate([
     repository_1.property({
         type: 'array',
-        itemType: 'string',
+        itemType: 'object',
         required: true,
     }),
     __metadata("design:type", Array)

@@ -31,7 +31,8 @@
     "migrate": "node ./dist/migrate",
     "prestart": "npm run build",
     "start": "node .",
-    "prepublishOnly": "npm run test"
+    "prepublishOnly": "npm run test",
+    "webpack": "webpack --mode=development -w"
   },
   "repository": {
     "type": "git"
@@ -55,7 +56,13 @@
     "@loopback/rest": "^1.12.0",
     "@loopback/rest-explorer": "^1.1.23",
     "@loopback/service-proxy": "^1.1.11",
-    "loopback-connector-mongodb": "^4.2.0"
+    "loopback-connector-mongodb": "^4.2.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "@material-ui/core": "^4.0.0-rc.0",
+    "@material-ui/icons": "^4.0.0",
+    "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0"
   },
   "devDependencies": {
     "@loopback/build": "^1.5.5",
@@ -63,6 +70,13 @@
     "@loopback/tslint-config": "^2.0.4",
     "@types/node": "^10.11.2",
     "tslint": "^5.15.0",
-    "typescript": "^3.4.3"
+    "typescript": "^3.4.3",
+    "@babel/core": "^7.4.5",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2"
   }
 }

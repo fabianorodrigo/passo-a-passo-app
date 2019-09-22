@@ -7,4 +7,5 @@ __export(require("./grupo.model"));
 __export(require("./papel.model"));
 __export(require("./procedimento.model"));
 __export(require("./passo.model"));
+__export(require("./teste.model"));
 //# sourceMappingURL=index.js.map

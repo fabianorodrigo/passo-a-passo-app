@@ -1,4 +1,5 @@
 import { Entity, model, property } from '@loopback/repository';
+import { Passo } from './passo.model';
 
 @model({ settings: {} })
 export class Procedimento extends Entity {
@@ -46,10 +47,10 @@ export class Procedimento extends Entity {
 
   @property({
     type: 'array',
-    itemType: 'string',
+    itemType: 'object',
     required: true,
   })
-  passos: string[];
+  passos: Passo[];
 
   constructor(data?: Partial<Procedimento>) {
     super(data);

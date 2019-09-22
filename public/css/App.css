@@ -1,0 +1,25 @@
+.MuiAppBar-colorPrimary {
+  background-color: cadetblue !important;
+}
+.makeStyles-inputInput-22 {
+  width: 220px !important;
+}
+.makeStyles-inputInput-22:focus {
+  width: 420px !important;
+}
+
+@media print {
+  td {
+    /* add this line for better support in chrome */
+    -webkit-print-color-adjust: exact;
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
