@@ -54,8 +54,6 @@ const Service = {
     nomeModeloPlural = requiredParam('nomeModeloPlural'),
     filtroAND = [],
     filtroOR = [],
-    include = [],
-    literalInclude,
     sort = [],
   }) {
     if (
@@ -72,32 +70,8 @@ const Service = {
     }
 
     let fqs = '';
-    if (literalInclude != null) {
-      fqs += `filter={"include":${literalInclude}`;
-    } else if (include != null && include.length > 0) {
-      fqs += `filter={"include":[`;
-      for (let f = 0; f < include.length; f++) {
-        if (f < include.length - 1) {
-          fqs += '{';
-        }
-        fqs += `"${include[f]}"`;
-        //Ã‰ o Ãºltimo, entra
-        if (f == include.length - 1) {
-          //Se for mais de um, adiciona chaves pra fechar
-          if (include.length > 1) {
-            fqs += '}';
-          }
-          //if (include.length > 1) { //versao anterior que parou de funcionar quando botou 'sort': if (include.length > 1)
-          fqs += ']';
-          //}
-        } else {
-          fqs += ':';
-        }
-      }
-    }
     if (filtroAND != null && Array.isArray(filtroAND) && filtroAND.length > 0) {
-      const temInclude = fqs.indexOf('filter') > -1;
-      fqs += temInclude ? ',' : 'filter={';
+      fqs += 'filter={';
       fqs += `"where":`;
       if (filtroAND.length > 1) {
         fqs += `{"and":[`;
@@ -149,7 +123,7 @@ const Service = {
     }
     fqs += '}';
 
-    //console.log(`/api/${nomeModeloPlural}?${fqs}`)
+    //console.log(`/${nomeModeloPlural.toLowerCase()}?${fqs}`)
     return decoratorRemoteCall(`/${nomeModeloPlural.toLowerCase()}?${fqs}`);
   },
 
@@ -159,32 +133,17 @@ const Service = {
    * Se for encontrar o sÃ­mbolo "+" na {expressaoFiltro}, entende-se como "AND", ou seja, sÃ³ virÃ£o resultados em que algum dos {campos}
    * apresentarem todas as partes separadas por "+"
    * Se for encontrado "," em {expressaoFiltro}, entende-se como "OR", ou seja, qualquer registro que possuir ao menos uma das partes separadas
-   * por ",", serÃ¡ retornado
+   * por ",", será retornado
    */
   getAllLike: function({
     nomeModeloPlural = requiredParam('nomeModeloPlural'),
     expressaoFiltro,
     campos = [],
-    include = [],
+    sort = [],
   }) {
-    const c = encodeURI('%');
+    //const c = encodeURI('%'); //bases relacionais
+    const c = encodeURI('.*'); //MongoDB
     let fqs = '';
-    if (include.length > 0) {
-      fqs += `filter={"include":`;
-      for (let f = 0; f < include.length; f++) {
-        if (f < include.length - 1) {
-          fqs += '{';
-        }
-        fqs += `"${include[f]}"`;
-        if (f == include.length - 1) {
-          if (include.length > 1) {
-            fqs += '}';
-          }
-        } else {
-          fqs += ':';
-        }
-      }
-    }
     if (expressaoFiltro != null && expressaoFiltro != '') {
       //Colocando caracter escape quando existirem aspas
       expressaoFiltro = expressaoFiltro.replace(/"/g, `\\"`);
@@ -195,7 +154,7 @@ const Service = {
       const filtrosAND = expressaoFiltro.split('+');
       //Se tiver vÃ­rgula no filtro, entende-se que os campos tem que ter ao menos um dos itens
       const filtrosOR = [];
-      //as expressÃµes AND que tiverem ocorrÃªncias de vÃ­rgulas, serÃ£o transferidas por array {filtrosOR}
+      //as expressÃµes AND que tiverem ocorrências de ví­rgulas, serão transferidas por array {filtrosOR}
       //e adicionadas em outro array para que sejam removidas posteriormente do {filtrosAND}
       const removerDeFiltrosAND = [];
       filtrosAND.forEach(filtro => {
@@ -213,7 +172,7 @@ const Service = {
 
       fqs += `"where":{"or":[`;
 
-      //Para cada filtro OR vai executar uma vez o laÃ§o externo, se nÃ£o houver, executa ao menos uma vez
+      //Para cada filtro OR vai executar uma vez o laço externo, se não houver, executa ao menos uma vez
       let contaOR = filtrosOR.length - 1;
       do {
         for (let i = 0; i < campos.length; i++) {
@@ -224,7 +183,7 @@ const Service = {
             fqs += `{"and":[`;
           }
 
-          //Se existe um filtroOR nesta posiÃ§Ã£o, acrescenta ao laÃ§os de AND
+          //Se existe um filtroOR nesta posição, acrescenta ao laços de AND
           if (filtrosOR[contaOR] != null) {
             fqs += `{"${campos[i]}":{"like":"${c}${filtrosOR[contaOR]}${c}","options":"i"}}`;
           }
@@ -244,34 +203,45 @@ const Service = {
 
       fqs += `]}`;
     }
+    if (sort != null && Array.isArray(sort) && sort.length > 0) {
+      fqs += fqs.indexOf('filter') > -1 ? ',' : 'filter={';
+      fqs += `"order":[`;
+      for (let f = 0; f < sort.length; f++) {
+        if (f > 0) {
+          fqs += ',';
+        }
+        fqs += `"${sort[f]}"`;
+      }
+      fqs += `]`;
+    }
     fqs += '}';
 
-    //console.log(`/api/${nomeModeloPlural}?${fqs}`)
+    //console.log(`/${nomeModeloPlural.toLowerCase()}?${fqs}`);
     return axios.get(`/${nomeModeloPlural.toLowerCase()}?${fqs}`);
   },
 
   delete: function({ nomeModeloPlural, id }) {
-    return axios.delete(`/api/${nomeModeloPlural}/${id}`);
+    return axios.delete(`/${nomeModeloPlural.toLowerCase()}/${id}`);
   },
 
   get: function({ nomeModeloPlural, id, include = [] }) {
-    const url = `/api/${nomeModeloPlural}/${id == null ? '' : id}`;
+    const url = `/${nomeModeloPlural.toLowerCase()}/${id == null ? '' : id}`;
     return axios.get(adicionaIncludeURL(url, include));
   },
 
   update: function({ nomeModeloPlural, instancia }) {
-    return axios.put(`/api/${nomeModeloPlural}/`, instancia);
+    return axios.put(`/${nomeModeloPlural.toLowerCase()}/`, instancia);
   },
 
   patch: function({ nomeModeloPlural, instancia }) {
-    return axios.patch(`/api/${nomeModeloPlural}/`, instancia);
+    return axios.patch(`/${nomeModeloPlural.toLowerCase()}/`, instancia);
   },
 
   insert: function({ nomeModeloPlural, instancia }) {
-    return axios.post(`/api/${nomeModeloPlural}/`, instancia);
+    return axios.post(`/${nomeModeloPlural.toLowerCase()}/`, instancia);
   },
   post: function({ nomeModeloPlural, instancia }) {
-    return axios.post(`/api/${nomeModeloPlural}/`, instancia);
+    return axios.post(`/${nomeModeloPlural.toLowerCase()}/`, instancia);
   },
   handleError: function(error) {
     if (error.response) {

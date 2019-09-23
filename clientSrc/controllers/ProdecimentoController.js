@@ -12,7 +12,7 @@ class ProcedimentoController {
       const response = await Service.getAllLike({
         nomeModeloPlural: 'Procedimentos',
         expressaoFiltro: filtro,
-        campos: ['titulo', 'entradas', 'saidas'],
+        campos: ['titulo', 'entradas', 'saidas', 'passos.descricao'],
       });
       //Agrupando itens por grupo
       let grupoItens = {};
