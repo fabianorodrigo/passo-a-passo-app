@@ -138,7 +138,7 @@ const Service = {
     }
     if (sort != null && Array.isArray(sort) && sort.length > 0) {
       fqs += fqs.indexOf('filter') > -1 ? ',' : 'filter={';
-      fqs += `"sort":[`;
+      fqs += `"order":[`;
       for (let f = 0; f < sort.length; f++) {
         if (f > 0) {
           fqs += ',';
