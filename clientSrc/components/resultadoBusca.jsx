@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import Collapse from '@material-ui/core/Collapse';
 import List from '@material-ui/core/List';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import ListItem from '@material-ui/core/ListItem';
@@ -12,6 +13,8 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Divider } from '@material-ui/core';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,78 +23,77 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     padding: '10px',
   },
+  grupo: {
+    color: 'black',
+    fontWeight: 'bold',
+  },
   nested: {
     paddingLeft: theme.spacing(4),
   },
 }));
 
 export default function ResultadoBusca(props) {
+  const [fechado, setFechado] = React.useState([]);
+  const handleToggle = value => {
+    const currentIndex = fechado.indexOf(value);
+    const newFechado = [...fechado];
+    if (currentIndex === -1) {
+      newFechado.push(value);
+    } else {
+      newFechado.splice(currentIndex, 1);
+    }
+    setFechado(newFechado);
+  };
+
   const classes = useStyles();
   return (
-    <List
-      className={classes.root}
-      component="nav"
-      aria-labelledby="nested-list-subheader"
-      subheader={
-        <ListSubheader component="div" id="nested-list-subheader">
-          {props.textoFiltro}
-        </ListSubheader>
-      }
-      className={classes.root}
-    >
+    <div className={classes.root}>
       {props.dados.resultadoBuscaProcedimentos &&
         Object.keys(props.dados.resultadoBuscaProcedimentos).length > 0 &&
         Object.keys(props.dados.resultadoBuscaProcedimentos).map(idGrupo => {
           return (
-            <ListItem key={`liResultadoGrupo${idGrupo}`}>
-              <ExpansionPanel
-                defaultExpanded={true}
-                key={`exPanelResultadoGrupo${idGrupo}`}
+            <List key={`menuGrupoProcessos`}>
+              <ListItem
+                button
+                selected={true}
+                onClick={() => {
+                  handleToggle(idGrupo);
+                }}
               >
-                <ExpansionPanelSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                  key={`exPSumResultadoGrupo${idGrupo}`}
-                >
-                  <Typography
-                    className={classes.heading}
-                    key={`typResultadoGrupo${idGrupo}`}
-                  >
-                    {props.dados.Grupos[idGrupo].titulo}
-                  </Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails key={`exPDetResultadoGrupo${idGrupo}`}>
+                <ListItemText
+                  className={classes.grupo}
+                  key={`liResultadoGrupo${idGrupo}`}
+                  primary={
+                    props.dados.resultadoBuscaProcedimentos[idGrupo].titulo
+                  }
+                />
+                {fechado.indexOf(idGrupo) === -1 ? (
+                  <ExpandLess key={`iconExpandLess${idGrupo}`} />
+                ) : (
+                  <ExpandMore key={`iconExpandMore${idGrupo}`} />
+                )}
+              </ListItem>
+              <Collapse
+                key={`collapse${idGrupo}`}
+                in={fechado == null || fechado.indexOf(idGrupo) === -1}
+                timeout="auto"
+                unmountOnExit
+              >
+                <List disablePadding key={`listFilhos${idGrupo}`}>
                   {props.dados.resultadoBuscaProcedimentos[
                     idGrupo
-                  ].processos.map(proc => {
+                  ].processos.map(p => {
                     return (
-                      <Paper
-                        className={classes.root}
-                        key={`paperResultadoProcesso${proc.id}`}
-                      >
-                        <Typography
-                          variant="h5"
-                          component="h3"
-                          key={`typResultadoProcesso${proc.id}`}
-                        >
-                          {proc.titulo}
-                        </Typography>
-                        <Typography
-                          component="p"
-                          key={`typDetailResultadoProcesso${proc.id}`}
-                        >
-                          Paper can be used to build surface or other elements
-                          for your application.
-                        </Typography>
-                      </Paper>
+                      <ListItem key={`li${p.id}`}>
+                        <ListItemText primary={p.titulo} />
+                      </ListItem>
                     );
                   })}
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
-            </ListItem>
+                </List>
+              </Collapse>
+            </List>
           );
         })}
-    </List>
+    </div>
   );
 }
