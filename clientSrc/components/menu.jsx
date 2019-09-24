@@ -58,7 +58,7 @@ export default function mainListItems(props) {
         aria-labelledby="nested-list-subheader"
         subheader={
           <ListSubheader component="div" id="nested-list-subheader">
-            Administração
+            {props.menuExpandido? "Administração":"Admin"}
           </ListSubheader>
         }
         className={classes.root}
@@ -97,7 +97,7 @@ export default function mainListItems(props) {
             id="nested-list-subheader"
             onClick={event => setSelectedIndex(-1)}
           >
-            Grupos de Processos
+            {props.menuExpandido? "Grupos de Processos":"Grupos"}
           </ListSubheader>
         }
         className={classes.root}

@@ -25,7 +25,7 @@ import ListaPapeis from './listaPapeis';
 import ListaContratos from './listaContratos';
 
 export default function Main(props) {
-  const menuRecolhivel = false;
+  const menuRecolhivel = true;
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -111,6 +111,7 @@ export default function Main(props) {
         }}
         open={open}
       >
+        <img width="100" height="54" src="img/logo.png" style={{position:'absolute',top:'5px', left:'10px'}}/>
         {menuRecolhivel && (
           <div className={classes.toolbarIcon}>
             <IconButton onClick={handleDrawerClose}>
@@ -120,7 +121,7 @@ export default function Main(props) {
         )}
         <Divider />
         <List>
-          <Menu dados={props.dados} onClick={handleChange} />
+          <Menu dados={props.dados} onClick={handleChange} menuExpandido={open} />
         </List>
       </Drawer>
       <main className={classes.content}>
