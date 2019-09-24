@@ -37,8 +37,8 @@ export default function Main(props) {
 
   //texto de busca
   const [textoFiltro, setTextoFiltro] = React.useState('');
-  function onChange(event, textoFiltro) {
-    setTextoFiltro(textoFiltro);
+  function onChange(event) {
+    setTextoFiltro(event.target.value);
     props.app.controllers.Procedimento.buscaProcessos(textoFiltro);
   }
 
