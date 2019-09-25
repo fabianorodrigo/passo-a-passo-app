@@ -18,7 +18,7 @@ class AppController {
       app: this,
       nomeEntidade: 'Procedimento',
       nomeEntidadePlural: 'Procedimentos',
-      mantemState: true,
+      mantemState: false,
       camposObrigatorios: [
         { atributo: 'titulo', label: 'Título' },
         { atributo: 'quando', label: 'Quando' },
@@ -33,7 +33,7 @@ class AppController {
       nomeEntidadePlural: 'Grupos',
       mantemState: true,
       camposObrigatorios: [{ atributo: 'titulo', label: 'Título' }],
-      especializacao: new GrupoController(this),
+      especializacao: new GrupoController(this)
     });
     AppController.geraController({
       app: this,
@@ -158,6 +158,7 @@ class AppController {
     atributoValueAutosuggest,
     camposObrigatorios,
     especializacao,
+    ordemCarga = [],
   }) {
     let assercoesMsg = '';
     if (nomeEntidade.trim() == '') {
@@ -186,6 +187,7 @@ class AppController {
           mantemState: mantemState,
           includesCarga: includesCarga,
           atributoValueAutosuggest: atributoValueAutosuggest,
+          ordemCarga,
         });
       },
       filtraState: termo => {
@@ -248,6 +250,7 @@ async function carregaGenerico({
   nomeEntidadePlural = requiredParam('nomeEntidadePlural'),
   mantemState,
   includesCarga,
+  ordemCarga,
   atributoValueAutosuggest,
 }) {
   const instancias = {};
@@ -256,6 +259,7 @@ async function carregaGenerico({
     const response = await Service.getAll({
       nomeModeloPlural: nomeEntidadePlural,
       include: includesCarga,
+      ordemCarga,
     });
     response.data.forEach(function(instancia) {
       instancias[instancia.id] = instancia;

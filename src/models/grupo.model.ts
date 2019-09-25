@@ -15,6 +15,12 @@ export class Grupo extends Entity {
   titulo: string;
 
   @property({
+    type: 'number',
+    required: true,
+  })
+  ordem: number;
+
+  @property({
     type: 'string',
   })
   grupoPai?: string;

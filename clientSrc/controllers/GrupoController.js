@@ -30,7 +30,7 @@ class GrupoController {
       this.app.setState('loading', true);
       const response = await Service.getAll({
         nomeModeloPlural: 'Grupos',
-        sort: ['titulo'],
+        sort: ['ordem','titulo'],
       });
       response.data.forEach(g => {
         grupos[g.id] = g;

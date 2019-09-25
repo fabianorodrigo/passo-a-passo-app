@@ -6,7 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import AppController from './AppController';
 
 //componentes
-import FormFornecedor from './components/formFornecedor';
+import FormProcedimento from './components/formProcedimento';
 
 //serviços
 
@@ -21,7 +21,7 @@ class App extends Component {
       usuarioLogado: logado,
       dados: {
         pagina: 1,
-        loading: false,
+        loading: false
       },
     };
   }
@@ -58,7 +58,7 @@ class App extends Component {
     return (
       <div className="App">
         <CssBaseline />
-        <FormFornecedor app={this._appController} ref="formEstabelecimento" />
+        <FormProcedimento app={this._appController} formName="formProcedimento" />
         <div className="App-body">
           <Main app={this._appController} dados={this.state.dados} />
         </div>

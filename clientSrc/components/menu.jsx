@@ -1,30 +1,30 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import PeopleIcon from '@material-ui/icons/People';
-import FileCopyIcon from '@material-ui/icons/FileCopyTwoTone';
-import { Divider } from '@material-ui/core';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import List from "@material-ui/core/List";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import PeopleIcon from "@material-ui/icons/People";
+import FileCopyIcon from "@material-ui/icons/FileCopyTwoTone";
+import { Divider } from "@material-ui/core";
 
-import Collapse from '@material-ui/core/Collapse';
-import FormatListNumbered from '@material-ui/icons/PlaylistPlay';
-import FolderOpen from '@material-ui/icons/FolderOpen';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+import Collapse from "@material-ui/core/Collapse";
+import FormatListNumbered from "@material-ui/icons/PlaylistPlay";
+import FolderOpen from "@material-ui/icons/FolderOpen";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: '100%',
+    width: "100%",
     maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.paper
   },
   nested: {
-    paddingLeft: theme.spacing(4),
-  },
+    paddingLeft: theme.spacing(4)
+  }
 }));
 
 export default function mainListItems(props) {
@@ -44,38 +44,39 @@ export default function mainListItems(props) {
     setAberto(newAberto);
   };
 
-  const grupos = props.dados.GruposHierarquica
-    ? Object.values(props.dados.GruposHierarquica)
-    : [];
+  const grupos = props.dados.GruposHierarquica ? Object.values(props.dados.GruposHierarquica) : [];
   const classes = useStyles();
   return (
     <div>
       {menuGruposProcessos(classes, aberto, grupos)}
       <Divider />
       <List
-        onClick={event => setSelectedIndex(-1)}
+        onClick={event => {
+          setSelectedIndex(-1);
+          props.setGrupoIdFiltro("");
+        }}
         component="nav"
         aria-labelledby="nested-list-subheader"
         subheader={
           <ListSubheader component="div" id="nested-list-subheader">
-            {props.menuExpandido? "Administração":"Admin"}
+            {props.menuExpandido ? "Administração" : "Admin"}
           </ListSubheader>
         }
         className={classes.root}
       >
-        <ListItem button onClick={props.onClick.bind(null, 'procedimentos')}>
+        <ListItem button onClick={()=>{props.app.setState('formProcedimento',true)}}>
           <ListItemIcon>
             <FileCopyIcon />
           </ListItemIcon>
           <ListItemText primary="Procedimentos" />
         </ListItem>
-        <ListItem button onClick={props.onClick.bind(null, 'grupos')}>
+        <ListItem button onClick={props.onClick.bind(null, "grupos")}>
           <ListItemIcon>
             <DashboardIcon />
           </ListItemIcon>
           <ListItemText primary="Grupos" />
         </ListItem>
-        <ListItem button onClick={props.onClick.bind(null, 'papeis')}>
+        <ListItem button onClick={props.onClick.bind(null, "papeis")}>
           <ListItemIcon>
             <PeopleIcon />
           </ListItemIcon>
@@ -87,7 +88,7 @@ export default function mainListItems(props) {
 
   function menuGruposProcessos(classes, aberto, grupos) {
     return (
-      <List
+      <List dense={true}
         key={`menuGrupoProcessos`}
         component="nav"
         aria-labelledby="nested-list-subheader"
@@ -95,9 +96,12 @@ export default function mainListItems(props) {
           <ListSubheader
             component="div"
             id="nested-list-subheader"
-            onClick={event => setSelectedIndex(-1)}
+            onClick={event => {
+              setSelectedIndex(-1);
+              props.setGrupoIdFiltro("");
+            }}
           >
-            {props.menuExpandido? "Grupos de Processos":"Grupos"}
+            {props.menuExpandido ? "Grupos de Processos" : "Grupos"}
           </ListSubheader>
         }
         className={classes.root}
@@ -112,6 +116,7 @@ export default function mainListItems(props) {
                 selected={selectedIndex === g.id}
                 onClick={() => {
                   setSelectedIndex(g.id);
+                  props.setGrupoIdFiltro(g.id);
                   if (g.filhos != null) {
                     handleToggle(g.id);
                   } else {
@@ -120,15 +125,11 @@ export default function mainListItems(props) {
                 }}
               >
                 <ListItemIcon key={`liMenuIcon${g.id}`}>
-                  {g.filhos == null ? (
-                    <FormatListNumbered key={`iconFormatListNumbered${g.id}`} />
-                  ) : (
-                    <FolderOpen key={`iconOpenFolder${g.id}`} />
-                  )}
+                  {g.filhos == null ? <FormatListNumbered key={`iconFormatListNumbered${g.id}`} /> : <FolderOpen key={`iconOpenFolder${g.id}`} />}
                 </ListItemIcon>
                 <ListItemText key={`liMenuText${g.id}`} primary={g.titulo} />
                 {g.filhos == null ? (
-                  ''
+                  ""
                 ) : aberto.indexOf(g.id) !== -1 ? (
                   <ExpandLess key={`iconExpandLess${g.id}`} />
                 ) : (
@@ -147,13 +148,8 @@ export default function mainListItems(props) {
   function menuFilhos(classes, aberto, grupo) {
     if (grupo.filhos && Object.keys(grupo.filhos).length > 0) {
       return (
-        <Collapse
-          key={`collapse${grupo.id}`}
-          in={aberto != null && aberto.indexOf(grupo.id) !== -1}
-          timeout="auto"
-          unmountOnExit
-        >
-          <List component="div" disablePadding key={`listFilhos${grupo.id}`}>
+        <Collapse key={`collapse${grupo.id}`} in={aberto != null && aberto.indexOf(grupo.id) !== -1} timeout="auto" unmountOnExit>
+          <List dense={true} component="div" disablePadding key={`listFilhos${grupo.id}`}>
             {Object.values(grupo.filhos).map(gf => {
               return (
                 <ListItem
@@ -163,6 +159,7 @@ export default function mainListItems(props) {
                   selected={selectedIndex === gf.id}
                   onClick={() => {
                     setSelectedIndex(gf.id);
+                    props.setGrupoIdFiltro(gf.id);
                     if (gf.filhos != null) {
                       handleToggle(gf.id);
                     } else {
