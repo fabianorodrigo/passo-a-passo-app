@@ -100,6 +100,7 @@ class AppController {
         `Não foi configurado um controller para a entidade "${nomeEntidade}"`,
       );
     }
+    console.log('carrega ' + nomeEntidade)
     this.controllers[nomeEntidade].carrega();
   }
   filtraState(nomeEntidade, termo) {

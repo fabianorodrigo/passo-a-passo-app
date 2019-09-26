@@ -12,10 +12,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-
-import TableBlocoPassos from "./tableBlocosPassos";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -26,73 +22,71 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     minWidth: 540
-  },
-  margin: {
-    margin: theme.spacing(3),
-  },
-  dense: {
-    marginTop: theme.spacing(2)
-  },
-  menu: {
-    width: 200
   }
 }));
 
-export default function formProcedimento(props) {
+export default function formPasso(props) {
   const classes = useStyles();
 
-  const [processo, setProcesso] = React.useState({
-    id: null,
-    titulo: "",
-    quando: "",
-    idGrupo: "",
-    entradas: [],
-    saidas: [],
-    procedimentosRelacionados: [],
-    passos: []
+  const [tipo, setTipo] = React.useState('descricao');
+  const [passo, setPasso] = React.useState({
+    idPapel: "",
+    descricao: "",
+    executarId: "",
+    markdown: ""
   });
 
   const handleClose = () => {
     props.app.setState(props.formName, false);
   };
   function onChange(event) {
-    console.log(event.target.value);
+    const { name, value } = e.target;
+    setPasso({ ...passo, [name]: value });
   }
 
+  const papeis = props.app.getState("Papeis");
   return (
-    <Dialog open={props.app.getState(props.formName)} onClose={handleClose} aria-labelledby="form-dialog-title" fullScreen>
-      <DialogTitle id="form-dialog-title">Procedimento</DialogTitle>
+    <Dialog open={props.app.getState(props.formName)} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="md">
+      <DialogTitle id="form-dialog-title">Passo</DialogTitle>
       <DialogContent>
-        <DialogContentText>To subscribe to this website, please enter your email address here. We will send updates occasionally.</DialogContentText>
-        <TextField label="Título" autoFocus id="titulo" className={classes.textField} margin="normal" variant="outlined" fullWidth />
-        <TextField label="Quando" id="quando" className={classes.textField} margin="normal" variant="outlined" fullWidth />
         <FormControl variant="outlined" className={classes.textField} margin="normal" fullWidth>
-          <InputLabel htmlFor="outlined-age-simple">Grupo de Processos</InputLabel>
+          <InputLabel autoFocus htmlFor="outlined-age-simple">Papel</InputLabel>
           <Select
-            label="Grupo"
-            value="abc"
+            label="Quem"
+            value={passo.idPapel}
             onChange={onChange}
             inputProps={{
-              name: "age",
+              name: "idPapel",
               id: "outlined-age-simple"
             }}
-            labelWidth={180}
+            labelWidth={100}
           >
             <MenuItem value="" disabled>
-              Grupo
+              Papel
             </MenuItem>
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            {papeis && Object.values(papeis).map(papel => {
+              return <MenuItem value={papel.idPapel}>{papel.titulo}</MenuItem>;
+            })}
           </Select>
         </FormControl>
         <FormControl variant="outlined" className={classes.textField} margin="normal" fullWidth>
-          <InputLabel htmlFor="outlined-age-simple">Passos</InputLabel>
-          <TableBlocoPassos processo={processo} dados={props.dados} /><br/>
-          <Fab size="small" color="default" aria-label="add" className={classes.margin} onClick={props.app.setState.bind(props.app,'formPasso',true)}>
-            <AddIcon />
-          </Fab>
+          <InputLabel htmlFor="outlined-age-simple">Tipo Descrição</InputLabel>
+          <Select
+            label="Tipo"
+            value={tipo}
+            onChange={(e)=>{setTipo(e.value)}}
+            inputProps={{
+              name: "tipo",
+              id: "outlined-age-simple"
+            }}
+            labelWidth={100}
+          >
+            <MenuItem value="descricao">Texto simples</MenuItem>
+            <MenuItem value="executarId">Executar outro procedimento registrado</MenuItem>
+            <MenuItem value="markdown">Texto markdown</MenuItem>
+          </Select>
         </FormControl>
+        <TextField label="Descrição"  id="descricao" className={classes.textField} margin="normal" variant="outlined" fullWidth multiline={true} />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">

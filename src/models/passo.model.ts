@@ -10,9 +10,21 @@ export class Passo extends Model {
 
   @property({
     type: 'string',
-    required: true,
+    required: false,
   })
   descricao: string;
+
+  @property({
+    type: 'string',
+    required: false,
+  })
+  executarId: string;
+
+  @property({
+    type: 'string',
+    required: false,
+  })
+  markdown: string;
 
   @property({
     type: 'number',
