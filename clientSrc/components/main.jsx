@@ -36,7 +36,6 @@ export default function Main(props) {
   };
 
   let timeout = React.useRef(null);
-  let teste = React.useRef(0);
   //texto de busca
   const [textoFiltro, setTextoFiltro] = React.useState("");
   function onChangeTextoFiltro(event) {
@@ -56,7 +55,6 @@ export default function Main(props) {
 
   //In order to have this hook run when the component is updated (this includes mounting), we need to set at least one variable as hook's dependency (in this case, var1 and var2).
   React.useEffect(() => {
-    teste.current++;
     if (timeout.current) {
       clearTimeout(timeout.current);
     }
