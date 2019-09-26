@@ -7,20 +7,29 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Tooltip from "@material-ui/core/Tooltip";
 
+import Fab from "@material-ui/core/Fab";
+import RemoveIcon from "@material-ui/icons/Remove";
+
 const useStyles = makeStyles(theme => ({
   table: {
     display: "block"
   },
-  tdPassos:{
-    paddingTop:'1px',
-    paddingBottom:'1px'
+  right:{
+    margin:'5px'
+  },
+  tdPassos: {
+    paddingTop: "1px",
+    paddingBottom: "1px"
+  },
+  paragrafoPassos: {
+    margin: "0 0 1px"
   }
 }));
 
 export default function tableBlocosPassos(props) {
   const classes = useStyles();
 
-  return getBlocoPassos(props.processo, props.dados).map((bloco, iBloco, arrayOrigem) => {
+  return getBlocoPassos(props.processo, props.app).map((bloco, iBloco, arrayOrigem) => {
     return (
       <Table className={classes.table} key={`tb_${props.processo.id}_${iBloco}`} size="small">
         <TableHead>
@@ -34,11 +43,43 @@ export default function tableBlocosPassos(props) {
         </TableHead>
         <TableBody>
           {bloco.passos.map((passo, iPasso) => {
+            if (passo.descricao != null && passo.descricao.trim() != "") {
+              passo.textoFinal = passo.descricao;
+            } else if (passo.markdown != null && passo.markdown.trim() != "") {
+              passo.textoFinal = passo.markdown;
+            } else if (passo.executarId != null && passo.executarId.trim() != "") {
+              passo.textoFinal = passo.executarId;
+            }
+
             return (
               <TableRow key={`tr_${props.processo.id}_${iBloco}_${iPasso}`}>
-                <TableCell className={classes.tdPassos} width="1800">
-                  {passo.ordem}. {passo.descricao}
-                </TableCell>
+                {passo.textoFinal.indexOf("\n") == -1 && (
+                  <TableCell className={classes.tdPassos} width="1800">
+                    {passo.ordem}. {passo.textoFinal}
+                    <Fab size="small" color="default" aria-label="add" className={classes.right} onClick={props.onDelete.bind(null, passo.ordem)}>
+                      <RemoveIcon />
+                    </Fab>
+                  </TableCell>
+                )}
+                {passo.textoFinal.indexOf("\n") != -1 && (
+                  <TableCell className={classes.tdPassos} width="1800">
+                    {passo.textoFinal.split("\n").map((linha, i) => {
+                      if (linha == "") {
+                        return <br key={`br_${props.processo.id}_${iBloco}_${iPasso}_${i}`} />;
+                      } else {
+                        return (
+                          <p className={classes.paragrafoPassos} key={`p_${props.processo.id}_${iBloco}_${iPasso}_${i}`}>
+                            {i == 0 ? `${passo.ordem}. ` : ""}
+                            {linha}
+                          </p>
+                        );
+                      }
+                    })}
+                    <Fab size="small" color="default" aria-label="add" className={classes.right} onClick={props.onDelete.bind(null, passo.ordem)}>
+                      <RemoveIcon />
+                    </Fab>
+                  </TableCell>
+                )}
               </TableRow>
             );
           })}
@@ -53,29 +94,28 @@ export default function tableBlocosPassos(props) {
  * Sempre que muda de papel executor, entra-se em um novo bloco
  *
  * @param {object} processo Processo analisado
- * @param {objectg} propsDados Dados globais que podem ser usados para montar a saída
+ * @param {objectg} app Instância do AppController que pode ser usado para obter dados para montar a saída
  */
-function getBlocoPassos(processo, propsDados) {
+function getBlocoPassos(processo, app) {
   const retorno = [];
   processo.passos.forEach((p, i) => {
     if (i == 0 || p.idPapel != processo.passos[i - 1].idPapel) {
-      retorno.push({ papel: propsDados.Papeis[p.idPapel], passos: [] });
+      retorno.push({ papel: app.getState("Papeis")[p.idPapel], passos: [] });
     }
     retorno[retorno.length - 1].passos.push(p);
   });
   return retorno;
 }
 
-
 const StyledTableCell = withStyles(theme => ({
   head: {
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
-    padding: '2px'
+    padding: "2px"
   },
   body: {
     fontSize: 14,
-    paddingTop: '0px'
+    paddingTop: "0px"
   }
 }))(TableCell);
 

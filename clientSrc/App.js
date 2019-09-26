@@ -7,7 +7,6 @@ import AppController from './AppController';
 
 //componentes
 import FormProcedimento from './components/formProcedimento';
-import FormPasso from './components/formPasso';
 
 //serviços
 
@@ -60,7 +59,6 @@ class App extends Component {
       <div className="App">
         <CssBaseline />
         <FormProcedimento app={this._appController} formName="formProcedimento" />
-        <FormPasso app={this._appController} formName="formPasso" />
         <div className="App-body">
           <Main app={this._appController} dados={this.state.dados} />
         </div>

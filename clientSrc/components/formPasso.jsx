@@ -21,14 +21,18 @@ const useStyles = makeStyles(theme => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    minWidth: 540
+    minWidth: '350px'
+  },
+  dialogPaper: {
+    minHeight: "350px",
+    maxHeight: "450px"
   }
 }));
 
 export default function formPasso(props) {
   const classes = useStyles();
 
-  const [tipo, setTipo] = React.useState('descricao');
+  const [tipo, setTipo] = React.useState("descricao");
   const [passo, setPasso] = React.useState({
     idPapel: "",
     descricao: "",
@@ -36,21 +40,33 @@ export default function formPasso(props) {
     markdown: ""
   });
 
+  const handleSalvar = () => {
+    props.onSalvar(passo);
+    props.app.setState(props.formName, false);
+  };
   const handleClose = () => {
     props.app.setState(props.formName, false);
   };
-  function onChange(event) {
-    const { name, value } = e.target;
+  const onChange = event => {
+    const { name, value } = event.target;
     setPasso({ ...passo, [name]: value });
-  }
+  };
 
   const papeis = props.app.getState("Papeis");
   return (
-    <Dialog open={props.app.getState(props.formName)} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="md">
+    <Dialog
+      open={props.app.getState(props.formName) || false}
+      onClose={handleClose}
+      aria-labelledby="form-dialog-title"
+      maxWidth="lg"
+      classes={{ paper: classes.dialogPaper }}
+    >
       <DialogTitle id="form-dialog-title">Passo</DialogTitle>
       <DialogContent>
         <FormControl variant="outlined" className={classes.textField} margin="normal" fullWidth>
-          <InputLabel autoFocus htmlFor="outlined-age-simple">Papel</InputLabel>
+          <InputLabel autoFocus htmlFor="outlined-age-simple">
+            Papel
+          </InputLabel>
           <Select
             label="Quem"
             value={passo.idPapel}
@@ -64,9 +80,14 @@ export default function formPasso(props) {
             <MenuItem value="" disabled>
               Papel
             </MenuItem>
-            {papeis && Object.values(papeis).map(papel => {
-              return <MenuItem value={papel.idPapel}>{papel.titulo}</MenuItem>;
-            })}
+            {papeis &&
+              Object.values(papeis).map(papel => {
+                return (
+                  <MenuItem key={`menuItem${papel.id}${papel.titulo}`} value={papel.id}>
+                    {papel.titulo}
+                  </MenuItem>
+                );
+              })}
           </Select>
         </FormControl>
         <FormControl variant="outlined" className={classes.textField} margin="normal" fullWidth>
@@ -74,7 +95,9 @@ export default function formPasso(props) {
           <Select
             label="Tipo"
             value={tipo}
-            onChange={(e)=>{setTipo(e.value)}}
+            onChange={e => {
+              setTipo(e.target.value);
+            }}
             inputProps={{
               name: "tipo",
               id: "outlined-age-simple"
@@ -86,14 +109,24 @@ export default function formPasso(props) {
             <MenuItem value="markdown">Texto markdown</MenuItem>
           </Select>
         </FormControl>
-        <TextField label="Descrição"  id="descricao" className={classes.textField} margin="normal" variant="outlined" fullWidth multiline={true} />
+        <TextField
+          label="Descrição"
+          onChange={onChange}
+          id="descricao"
+          name={tipo}
+          className={classes.textField}
+          margin="normal"
+          variant="outlined"
+          fullWidth
+          multiline={true}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
-          Cancel
+          Fechar
         </Button>
-        <Button onClick={handleClose} color="primary">
-          Subscribe
+        <Button onClick={handleSalvar} color="primary">
+          Salvar
         </Button>
       </DialogActions>
     </Dialog>

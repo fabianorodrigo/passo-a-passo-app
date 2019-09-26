@@ -12,10 +12,11 @@ import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
 
 import TableBlocoPassos from "./tableBlocosPassos";
+import FormPasso from "./formPasso";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -28,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     minWidth: 540
   },
   margin: {
-    margin: theme.spacing(3),
+    margin: theme.spacing(3)
   },
   dense: {
     marginTop: theme.spacing(2)
@@ -55,12 +56,30 @@ export default function formProcedimento(props) {
   const handleClose = () => {
     props.app.setState(props.formName, false);
   };
+  const addPasso = passo => {
+    const p = JSON.parse(JSON.stringify(passo)); //clonar objeto recebido
+    p.ordem = processo.passos.length + 1;
+    processo.passos.push(p);
+  };
+  const deletePasso = ordem => {
+    const p = JSON.parse(JSON.stringify(processo));
+    p.passos.splice(
+      p.passos.findIndex(elemento => {
+        return elemento.ordem == ordem;
+      }),
+      1
+    );
+    p.passos.forEach((passo,i)=>{
+      passo.ordem = i+1;
+    })
+    setProcesso(p);
+  };
   function onChange(event) {
     console.log(event.target.value);
   }
-
   return (
-    <Dialog open={props.app.getState(props.formName)} onClose={handleClose} aria-labelledby="form-dialog-title" fullScreen>
+    <Dialog open={props.app.getState(props.formName) || false} onClose={handleClose} aria-labelledby="form-dialog-title" fullScreen>
+      <FormPasso app={props.app} formName="formPasso" onSalvar={addPasso} />
       <DialogTitle id="form-dialog-title">Procedimento</DialogTitle>
       <DialogContent>
         <DialogContentText>To subscribe to this website, please enter your email address here. We will send updates occasionally.</DialogContentText>
@@ -86,20 +105,21 @@ export default function formProcedimento(props) {
             <MenuItem value={30}>Thirty</MenuItem>
           </Select>
         </FormControl>
-        <FormControl variant="outlined" className={classes.textField} margin="normal" fullWidth>
-          <InputLabel htmlFor="outlined-age-simple">Passos</InputLabel>
-          <TableBlocoPassos processo={processo} dados={props.dados} /><br/>
-          <Fab size="small" color="default" aria-label="add" className={classes.margin} onClick={props.app.setState.bind(props.app,'formPasso',true)}>
+        <fieldset>
+          <legend>Passos</legend>
+          <TableBlocoPassos processo={processo} app={props.app} onDelete={deletePasso} />
+          <br />
+          <Fab size="small" color="default" aria-label="add" className={classes.margin} onClick={props.app.setState.bind(props.app, "formPasso", true)}>
             <AddIcon />
           </Fab>
-        </FormControl>
+        </fieldset>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
-          Cancel
+          Fechar
         </Button>
         <Button onClick={handleClose} color="primary">
-          Subscribe
+          Salvar
         </Button>
       </DialogActions>
     </Dialog>
