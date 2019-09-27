@@ -80,7 +80,7 @@ export default function ResultadoBusca(props) {
         Object.keys(props.dados.resultadoBuscaProcedimentos).length > 0 &&
         Object.keys(props.dados.resultadoBuscaProcedimentos).map(idGrupo => {
           return (
-            <List key={`menuGrupoProcessos`}>
+            <List key={`resultadoBusca_${idGrupo}`}>
               <StyledListItem
                 button
                 selected={true}

@@ -63,7 +63,8 @@
     "loopback-connector-mongodb": "^4.2.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-markdown": "^4.2.2"
+    "react-markdown": "^4.2.2",
+    "remark-breaks": "^1.0.3"
   },
   "devDependencies": {
     "@loopback/build": "^1.5.5",

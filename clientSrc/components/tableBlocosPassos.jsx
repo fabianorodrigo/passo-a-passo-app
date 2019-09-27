@@ -8,6 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import ReactMarkDown from 'react-markdown';
+import Breaks from 'remark-breaks';
 
 import Fab from '@material-ui/core/Fab';
 import RemoveIcon from '@material-ui/icons/Remove';
@@ -15,6 +16,9 @@ import RemoveIcon from '@material-ui/icons/Remove';
 const useStyles = makeStyles(theme => ({
   table: {
     display: 'block',
+    backgroundColor: 'white',
+    borderColor: 'black',
+    border: '1px'
   },
   right: {
     margin: '5px',
@@ -39,7 +43,7 @@ export default function tableBlocosPassos(props) {
   return getBlocoPassos(props.processo, props.app).map(
     (bloco, iBloco, arrayOrigem) => {
       return (
-        <Table
+        <Table 
           className={classes.table}
           key={`tb_${props.processo.id}_${iBloco}`}
           size="small"
@@ -71,10 +75,9 @@ export default function tableBlocosPassos(props) {
 
               return (
                 <TableRow key={`tr_${props.processo.id}_${iBloco}_${iPasso}`}>
-                  {passo.textoFinal.indexOf('\n') == -1 && (
                     <TableCell className={classes.tdPassos} width="1800">
                       <ReactMarkDown
-                        source={`${passo.ordem}. ${passo.textoFinal}`}
+                        source={`${passo.ordem}. ${passo.textoFinal}`} plugins={[Breaks]}
                       />
                       {props.onDelete && (
                         <Fab
@@ -88,41 +91,6 @@ export default function tableBlocosPassos(props) {
                         </Fab>
                       )}
                     </TableCell>
-                  )}
-                  {passo.textoFinal.indexOf('\n') != -1 && (
-                    <TableCell className={classes.tdPassos} width="1800">
-                      {passo.textoFinal.split('\n').map((linha, i) => {
-                        if (linha == '') {
-                          return (
-                            <br
-                              key={`br_${props.processo.id}_${iBloco}_${iPasso}_${i}`}
-                            />
-                          );
-                        } else {
-                          return (
-                            <p
-                              className={classes.paragrafoPassos}
-                              key={`p_${props.processo.id}_${iBloco}_${iPasso}_${i}`}
-                            >
-                              {i == 0 ? `${passo.ordem}. ` : ''}
-                              {linha}
-                            </p>
-                          );
-                        }
-                      })}
-                      {props.onDelete && (
-                        <Fab
-                          size="small"
-                          color="default"
-                          aria-label="add"
-                          className={classes.right}
-                          onClick={props.onDelete.bind(null, passo.ordem)}
-                        >
-                          <RemoveIcon />
-                        </Fab>
-                      )}
-                    </TableCell>
-                  )}
                 </TableRow>
               );
             })}
