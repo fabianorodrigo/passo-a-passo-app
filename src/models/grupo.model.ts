@@ -16,7 +16,7 @@ export class Grupo extends Entity {
 
   @property({
     type: 'number',
-    required: true,
+    required: false,
   })
   ordem: number;
 

@@ -1,12 +1,14 @@
-import React, { Component } from 'react';
-import Main from './components/main';
-import ReactDOM from 'react-dom';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import React, { Component } from "react";
+import Main from "./components/main";
+import ReactDOM from "react-dom";
+import CssBaseline from "@material-ui/core/CssBaseline";
 //Controller da aplicação
-import AppController from './AppController';
+import AppController from "./AppController";
 
 //componentes
-import FormProcedimento from './components/formProcedimento';
+import FormProcedimento from "./components/formProcedimento";
+import Mensagem from "./components/mensagem";
+//import Popup from "./components/popup";
 
 //serviços
 
@@ -15,14 +17,15 @@ class App extends Component {
     super(props, context);
     this._appController = new AppController(this);
 
-    let logado = sessionStorage.getItem('access_token') != null;
+    let logado = sessionStorage.getItem("access_token") != null;
 
     this.state = {
       usuarioLogado: logado,
       dados: {
         pagina: 1,
-        loading: false
-      },
+        loading: false,
+        adminMode: false
+      }
     };
   }
 
@@ -35,6 +38,17 @@ class App extends Component {
   cargaInicialDados() {
     //Carga
     this._appController.cargaEntidades();
+    //Forma tosca de desabilitar os botões de edição para os usuários
+    if (location.search != null && location.search.trim() != "") {
+      const urlParams = new URLSearchParams(location.search);
+      this.atualizaStateDados(
+        "adminMode",
+        urlParams
+          .get("adminMode")
+          .toLowerCase()
+          .trim() === "true"
+      );
+    }
   }
 
   getStateDados(chave) {
@@ -67,4 +81,4 @@ class App extends Component {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

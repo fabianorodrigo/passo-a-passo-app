@@ -22,8 +22,14 @@ const useStyles = makeStyles(theme => ({
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper
   },
-  nested: {
-    paddingLeft: theme.spacing(4)
+  nested0: {
+    paddingLeft: theme.spacing(3)
+  },
+  nested1: {
+    paddingLeft: theme.spacing(6)
+  },
+  nested2: {
+    paddingLeft: theme.spacing(9)
   }
 }));
 
@@ -50,45 +56,53 @@ export default function mainListItems(props) {
     <div>
       {menuGruposProcessos(classes, aberto, grupos)}
       <Divider />
-      <List
-        onClick={event => {
-          setSelectedIndex(-1);
-          props.setGrupoIdFiltro("");
-        }}
-        component="nav"
-        aria-labelledby="nested-list-subheader"
-        subheader={
-          <ListSubheader component="div" id="nested-list-subheader">
-            {props.menuExpandido ? "Administração" : "Admin"}
-          </ListSubheader>
-        }
-        className={classes.root}
-      >
-        <ListItem button onClick={()=>{props.app.setState('formProcedimento',true)}}>
-          <ListItemIcon>
-            <FileCopyIcon />
-          </ListItemIcon>
-          <ListItemText primary="Procedimentos" />
-        </ListItem>
-        <ListItem button onClick={props.onClick.bind(null, "grupos")}>
-          <ListItemIcon>
-            <DashboardIcon />
-          </ListItemIcon>
-          <ListItemText primary="Grupos" />
-        </ListItem>
-        <ListItem button onClick={props.onClick.bind(null, "papeis")}>
-          <ListItemIcon>
-            <PeopleIcon />
-          </ListItemIcon>
-          <ListItemText primary="Papéis" />
-        </ListItem>
-      </List>
+      {props.app.getState("adminMode") && (
+        <List
+          onClick={event => {
+            setSelectedIndex(-1);
+            props.setGrupoIdFiltro("");
+          }}
+          component="nav"
+          aria-labelledby="nested-list-subheader"
+          subheader={
+            <ListSubheader component="div" id="nested-list-subheader">
+              {props.menuExpandido ? "Administração" : "Admin"}
+            </ListSubheader>
+          }
+          className={classes.root}
+        >
+          <ListItem
+            button
+            onClick={() => {
+              props.app.setState("formProcedimento", true);
+            }}
+          >
+            <ListItemIcon>
+              <FileCopyIcon />
+            </ListItemIcon>
+            <ListItemText primary="Procedimentos" />
+          </ListItem>
+          <ListItem button onClick={props.onClick.bind(null, "grupos")}>
+            <ListItemIcon>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary="Grupos" />
+          </ListItem>
+          <ListItem button onClick={props.onClick.bind(null, "papeis")}>
+            <ListItemIcon>
+              <PeopleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Papéis" />
+          </ListItem>
+        </List>
+      )}
     </div>
   );
 
   function menuGruposProcessos(classes, aberto, grupos) {
     return (
-      <List dense={true}
+      <List
+        dense={true}
         key={`menuGrupoProcessos`}
         component="nav"
         aria-labelledby="nested-list-subheader"
@@ -142,36 +156,45 @@ export default function mainListItems(props) {
         })}
       </List>
     );
-    1;
   }
 
-  function menuFilhos(classes, aberto, grupo) {
+  function menuFilhos(classes, aberto, grupo, nivel = 0) {
     if (grupo.filhos && Object.keys(grupo.filhos).length > 0) {
       return (
         <Collapse key={`collapse${grupo.id}`} in={aberto != null && aberto.indexOf(grupo.id) !== -1} timeout="auto" unmountOnExit>
           <List dense={true} component="div" disablePadding key={`listFilhos${grupo.id}`}>
             {Object.values(grupo.filhos).map(gf => {
               return (
-                <ListItem
-                  button
-                  className={classes.nested}
-                  key={`li${gf.id}`}
-                  selected={selectedIndex === gf.id}
-                  onClick={() => {
-                    setSelectedIndex(gf.id);
-                    props.setGrupoIdFiltro(gf.id);
-                    if (gf.filhos != null) {
-                      handleToggle(gf.id);
-                    } else {
-                      props.onClick(null, gf.id);
-                    }
-                  }}
-                >
-                  <ListItemIcon>
-                    <FormatListNumbered />
-                  </ListItemIcon>
-                  <ListItemText primary={gf.titulo} />
-                </ListItem>
+                <div key={`divmenu${gf.id}`}>
+                  <ListItem
+                    button
+                    className={classes[`nested${nivel}`]}
+                    key={`li${gf.id}`}
+                    selected={selectedIndex === gf.id}
+                    onClick={() => {
+                      setSelectedIndex(gf.id);
+                      props.setGrupoIdFiltro(gf.id);
+                      if (gf.filhos != null) {
+                        handleToggle(gf.id);
+                      } else {
+                        props.onClick(null, gf.id);
+                      }
+                    }}
+                  >
+                    <ListItemIcon key={`liMenuIcon${gf.id}`}>
+                      {gf.filhos == null ? <FormatListNumbered key={`iconFormatListNumbered${gf.id}`} /> : <FolderOpen key={`iconOpenFolder${gf.id}`} />}
+                    </ListItemIcon>
+                    <ListItemText primary={gf.titulo} />
+                    {gf.filhos == null ? (
+                      ""
+                    ) : aberto.indexOf(gf.id) !== -1 ? (
+                      <ExpandLess key={`iconExpandLess${gf.id}`} />
+                    ) : (
+                      <ExpandMore key={`iconExpandMore${gf.id}`} />
+                    )}
+                  </ListItem>
+                  {gf.filhos && menuFilhos(classes, aberto, gf, nivel + 1)}
+                </div>
               );
             })}
           </List>

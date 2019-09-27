@@ -56,7 +56,11 @@ class AppController {
   }
 
   mostraMensagem(msg, tipo, cb) {
-    this._appUI.refs.popupMensagem.handleAlertShow(msg, tipo, cb);
+    //this._appUI.refs.popupMensagem.handleAlertShow(msg, tipo, cb);
+    alert(msg);
+    if(cb){
+    cb();
+    }
   }
 
   get appUI() {
@@ -100,7 +104,6 @@ class AppController {
         `Não foi configurado um controller para a entidade "${nomeEntidade}"`,
       );
     }
-    console.log('carrega ' + nomeEntidade)
     this.controllers[nomeEntidade].carrega();
   }
   filtraState(nomeEntidade, termo) {
@@ -328,7 +331,7 @@ async function salvaGenerico({
         dadoState[response.data.id] = response.data;
         app.setState(nomeEntidadePlural, dadoState);
       }
-      if (cb) {
+      if (cb && cb instanceof Function) {
         cb();
       }
     } catch (e) {

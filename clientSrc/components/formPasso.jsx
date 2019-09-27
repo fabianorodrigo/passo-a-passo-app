@@ -36,8 +36,7 @@ export default function formPasso(props) {
   const [passo, setPasso] = React.useState({
     idPapel: "",
     descricao: "",
-    executarId: "",
-    markdown: ""
+    executarId: ""
   });
 
   const handleSalvar = () => {
@@ -104,9 +103,8 @@ export default function formPasso(props) {
             }}
             labelWidth={100}
           >
-            <MenuItem value="descricao">Texto simples</MenuItem>
+            <MenuItem value="descricao">Descrição textual</MenuItem>
             <MenuItem value="executarId">Executar outro procedimento registrado</MenuItem>
-            <MenuItem value="markdown">Texto markdown</MenuItem>
           </Select>
         </FormControl>
         <TextField
@@ -126,7 +124,7 @@ export default function formPasso(props) {
           Fechar
         </Button>
         <Button onClick={handleSalvar} color="primary">
-          Salvar
+          Incluir
         </Button>
       </DialogActions>
     </Dialog>

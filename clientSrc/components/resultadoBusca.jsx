@@ -141,12 +141,12 @@ export default function ResultadoBusca(props) {
                           {p.quando}
                           <br />
                           <Grid container spacing={3}>
-                            <Grid item xs>
-                              <b>Entradas: </b>
+                            <Grid item xs >
+                              <b style={{color: 'blue'}}>Entradas: </b>
                               {p.entradas.join(', ')}
                             </Grid>
-                            <Grid item xs>
-                              <b>Saídas: </b>
+                            <Grid item xs >
+                              <b style={{color: 'red'}}>Saídas: </b>
                               {p.saidas.join(', ')}
                             </Grid>
                           </Grid>

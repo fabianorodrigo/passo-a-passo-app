@@ -234,6 +234,8 @@ const Service = {
   },
 
   insert: function({ nomeModeloPlural, instancia }) {
+    console.log(`/${nomeModeloPlural.toLowerCase()}/`, JSON.stringify(instancia))
+    delete instancia.id;
     return axios.post(`/${nomeModeloPlural.toLowerCase()}/`, instancia);
   },
   post: function({ nomeModeloPlural, instancia }) {

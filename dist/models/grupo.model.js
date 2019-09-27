@@ -32,7 +32,7 @@ __decorate([
 __decorate([
     repository_1.property({
         type: 'number',
-        required: true,
+        required: false,
     }),
     __metadata("design:type", Number)
 ], Grupo.prototype, "ordem", void 0);
