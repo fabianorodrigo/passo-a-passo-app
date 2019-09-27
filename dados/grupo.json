@@ -1,0 +1,11 @@
+{"_id":{"$oid":"5d890cf84c65221dce7f3654"},"titulo":"Contratações"}
+{"_id":{"$oid":"5d890d324c65221dce7f3655"},"titulo":"Planejamento","grupoPai":"5d890cf84c65221dce7f3654","ordem":1}
+{"_id":{"$oid":"5d890d804c65221dce7f3656"},"titulo":"Seleção do Fornecedor","grupoPai":"5d890cf84c65221dce7f3654","ordem":2}
+{"_id":{"$oid":"5d890d974c65221dce7f3657"},"titulo":"Gestão de Contrato","grupoPai":"5d890cf84c65221dce7f3654","ordem":3}
+{"_id":{"$oid":"5d890e084c65221dce7f3658"},"titulo":"Gestão de Segurança da Informação"}
+{"_id":{"$oid":"5d890e434c65221dce7f3659"},"titulo":"Gestão de Dados"}
+{"_id":{"$oid":"5d890e6a4c65221dce7f365a"},"titulo":"Desenvolvimento de Sistemas"}
+{"_id":{"$oid":"5d890f5a4c65221dce7f365b"},"titulo":"Gerência de Configuração"}
+{"_id":{"$oid":"5d8e29f61bcf425f42982a32"},"titulo":"Basis","grupoPai":"5d890d974c65221dce7f3657"}
+{"_id":{"$oid":"5d8e2a001bcf425f42982a33"},"titulo":"CTIS","grupoPai":"5d890d974c65221dce7f3657"}
+{"_id":{"$oid":"5d8e43c01bcf425f42982a34"},"titulo":"IOS","grupoPai":"5d890d974c65221dce7f3657"}
