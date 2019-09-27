@@ -67,13 +67,13 @@ export default makeStyles(theme => ({
   content: {
     flexGrow: 1,
     height: '100vh',
-    overflow: 'auto'
+    overflow: 'auto',
   },
   container: {
     margin: '0px',
     maxWidth: '1799px',
     width: '99%',
-    padding: theme.spacing(0)
+    padding: theme.spacing(0),
   },
   paper: {
     padding: theme.spacing(2),
@@ -115,9 +115,9 @@ export default makeStyles(theme => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      width: 120,
+      width: 200,
       '&:focus': {
-        width: 200,
+        width: 400,
       },
     },
   },

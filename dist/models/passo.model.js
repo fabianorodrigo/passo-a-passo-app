@@ -25,10 +25,24 @@ __decorate([
 __decorate([
     repository_1.property({
         type: 'string',
-        required: true,
+        required: false,
     }),
     __metadata("design:type", String)
 ], Passo.prototype, "descricao", void 0);
+__decorate([
+    repository_1.property({
+        type: 'string',
+        required: false,
+    }),
+    __metadata("design:type", String)
+], Passo.prototype, "executarId", void 0);
+__decorate([
+    repository_1.property({
+        type: 'string',
+        required: false,
+    }),
+    __metadata("design:type", String)
+], Passo.prototype, "markdown", void 0);
 __decorate([
     repository_1.property({
         type: 'number',
