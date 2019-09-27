@@ -24,6 +24,11 @@ const useStyles = makeStyles(theme => ({
   paragrafoPassos: {
     margin: '0 0 1px',
   },
+  fab: {
+    position: 'absolute',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
+  },
 }));
 
 export default function tableBlocosPassos(props) {

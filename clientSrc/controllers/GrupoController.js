@@ -30,7 +30,7 @@ class GrupoController {
       this.app.setState('loading', true);
       const response = await Service.getAll({
         nomeModeloPlural: 'Grupos',
-        sort: ['ordem','titulo'],
+        sort: ['ordem', 'titulo'],
       });
       response.data.forEach(g => {
         grupos[g.id] = g;
@@ -58,6 +58,7 @@ class GrupoController {
       this.app.setState('loading', true);
 
       Object.values(gruposHierarquica).forEach(pai => {
+        pai.tituloComposto = pai.titulo;
         const paiApendado = apendaFilhos(pai, gruposFilhosPorPai);
         gruposHierarquica[pai.id] = paiApendado;
       });
@@ -78,6 +79,7 @@ function apendaFilhos(grupoPai, filhosPorPai) {
   if (filhosPorPai[grupoPai.id] != null) {
     grupoPai.filhos = {};
     filhosPorPai[grupoPai.id].forEach(f => {
+      f.tituloComposto = `${grupoPai.tituloComposto} 🢒 ${f.titulo}`;
       const fApendado = apendaFilhos(f, filhosPorPai);
       grupoPai.filhos[f.id] = fApendado;
     });
