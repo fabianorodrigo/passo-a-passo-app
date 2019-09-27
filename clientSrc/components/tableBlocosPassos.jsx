@@ -7,6 +7,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Tooltip from '@material-ui/core/Tooltip';
 
+import ReactMarkDown from 'react-markdown';
+
 import Fab from '@material-ui/core/Fab';
 import RemoveIcon from '@material-ui/icons/Remove';
 
@@ -71,7 +73,9 @@ export default function tableBlocosPassos(props) {
                 <TableRow key={`tr_${props.processo.id}_${iBloco}_${iPasso}`}>
                   {passo.textoFinal.indexOf('\n') == -1 && (
                     <TableCell className={classes.tdPassos} width="1800">
-                      {passo.ordem}. {passo.textoFinal}
+                      <ReactMarkDown
+                        source={`${passo.ordem}. ${passo.textoFinal}`}
+                      />
                       {props.onDelete && (
                         <Fab
                           size="small"
