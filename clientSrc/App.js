@@ -7,6 +7,7 @@ import AppController from "./AppController";
 
 //componentes
 import FormProcedimento from "./components/formProcedimento";
+import FormPapel from "./components/formPapel";
 import Mensagem from "./components/mensagem";
 //import Popup from "./components/popup";
 
@@ -73,6 +74,7 @@ class App extends Component {
       <div className="App">
         <CssBaseline />
         <FormProcedimento app={this._appController} formName="formProcedimento" />
+        <FormPapel app={this._appController} formName="formPapel" />
         <div className="App-body">
           <Main app={this._appController} dados={this.state.dados} />
         </div>

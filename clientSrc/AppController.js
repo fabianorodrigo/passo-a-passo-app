@@ -41,6 +41,7 @@ class AppController {
       nomeEntidadePlural: 'Papeis',
       mantemState: true,
       camposObrigatorios: [{ atributo: 'titulo', label: 'Título' }],
+      ordemCarga : ['titulo']
     });
   }
 

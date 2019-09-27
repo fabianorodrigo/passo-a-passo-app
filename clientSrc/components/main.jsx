@@ -167,7 +167,7 @@ export default function Main(props) {
             app={props.app}
           />
           {menu == 'grupos' && <ListaContratos />}
-          {menu == 'papeis' && <ListaPapeis />}
+          {menu == 'papeis' && <ListaPapeis app={props.app} />}
         </Container>
       </main>
     </div>
