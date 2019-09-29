@@ -1,0 +1,1 @@
+pm2 status passo-a-passo-app
