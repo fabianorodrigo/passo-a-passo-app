@@ -33,6 +33,7 @@ class GrupoController {
         sort: ['ordem', 'titulo'],
       });
       response.data.forEach(g => {
+        g.tituloComposto = g.titulo;
         grupos[g.id] = g;
         //Se não tem pai, começa a colocar na raiz da estrutura hierárquica
         //Se não, coloca na {gruposFilhosPorPai} para serem adicionados posteriormente de forma adequada
@@ -59,7 +60,7 @@ class GrupoController {
 
       Object.values(gruposHierarquica).forEach(pai => {
         pai.tituloComposto = pai.titulo;
-        const paiApendado = apendaFilhos(pai, gruposFilhosPorPai);
+        const paiApendado = apendaFilhos.call(this, pai, gruposFilhosPorPai);
         gruposHierarquica[pai.id] = paiApendado;
       });
       this.app.setState('GruposHierarquica', gruposHierarquica);
@@ -80,7 +81,11 @@ function apendaFilhos(grupoPai, filhosPorPai) {
     grupoPai.filhos = {};
     filhosPorPai[grupoPai.id].forEach(f => {
       f.tituloComposto = `${grupoPai.tituloComposto} 🢒 ${f.titulo}`;
-      const fApendado = apendaFilhos(f, filhosPorPai);
+      //copiando o titulo composto para a estrutura não hierárquica
+      const grupos = this.app.getState('Grupos');
+      grupos[f.id].tituloComposto = f.tituloComposto;
+      this.app.setState('Grupos', grupos);
+      const fApendado = apendaFilhos.call(this, f, filhosPorPai);
       grupoPai.filhos[f.id] = fApendado;
     });
   }

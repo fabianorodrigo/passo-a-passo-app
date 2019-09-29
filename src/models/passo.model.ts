@@ -1,6 +1,7 @@
-import {Model, model, property} from '@loopback/repository';
+import { Model, model, property } from '@loopback/repository';
+import { Procedimento } from '.';
 
-@model({settings: {}})
+@model({ settings: {} })
 export class Passo extends Model {
   @property({
     type: 'string',
@@ -15,23 +16,16 @@ export class Passo extends Model {
   descricao: string;
 
   @property({
-    type: 'string',
+    type: 'object',
     required: false,
   })
-  executarId: string;
-
-  @property({
-    type: 'string',
-    required: false,
-  })
-  markdown: string;
+  executarProcedimento: Procedimento;
 
   @property({
     type: 'number',
     required: true,
   })
   ordem: number;
-
 
   constructor(data?: Partial<Passo>) {
     super(data);

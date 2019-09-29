@@ -3,19 +3,9 @@ import { makeStyles, styled } from '@material-ui/core/styles';
 import Collapse from '@material-ui/core/Collapse';
 import Box from '@material-ui/core/Box';
 import List from '@material-ui/core/List';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
-import TimerIcon from '@material-ui/icons/Timer';
 import ListItemText from '@material-ui/core/ListItemText';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Grid from '@material-ui/core/Grid';
@@ -92,7 +82,8 @@ export default function ResultadoBusca(props) {
                   className={classes.grupo}
                   key={`liResultadoGrupo${idGrupo}`}
                   primary={
-                    props.dados.resultadoBuscaProcedimentos[idGrupo].titulo
+                    props.app.getState('resultadoBuscaProcedimentos')[idGrupo]
+                      .tituloComposto
                   }
                 />
                 {fechado.indexOf(idGrupo) === -1 ? (
@@ -141,12 +132,12 @@ export default function ResultadoBusca(props) {
                           {p.quando}
                           <br />
                           <Grid container spacing={3}>
-                            <Grid item xs >
-                              <b style={{color: 'blue'}}>Entradas: </b>
+                            <Grid item xs>
+                              <b style={{ color: 'blue' }}>Entradas: </b>
                               {p.entradas.join(', ')}
                             </Grid>
-                            <Grid item xs >
-                              <b style={{color: 'red'}}>Saídas: </b>
+                            <Grid item xs>
+                              <b style={{ color: 'red' }}>Saídas: </b>
                               {p.saidas.join(', ')}
                             </Grid>
                           </Grid>

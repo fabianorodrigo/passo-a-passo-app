@@ -1,5 +1,5 @@
-import axios from "axios";
-import { requiredParam } from "./utils";
+import axios from 'axios';
+import { requiredParam } from './utils';
 
 /**
  * FunÃ§Ã£o responsÃ¡vel por encapsular as chamadas a serviÃ§os e dar um tratamento padrÃ£o
@@ -13,7 +13,7 @@ function decoratorRemoteCall(url) {
       })
       .catch(e => {
         if (e.response.status == 401) {
-          sessionStorage.removeItem("access_token");
+          sessionStorage.removeItem('access_token');
           reject(e);
         } else {
           reject(e);
@@ -30,7 +30,7 @@ const Service = {
     return axios.post(`/api/Usuarios/login`, {
       email: autenticacao.email,
       password: autenticacao.senha,
-      ttl: 3600
+      ttl: 3600,
     });
   },
 
@@ -46,62 +46,80 @@ const Service = {
    * @param {Array} filtroOR ExpressÃµes que delimitamo resultado comutativamente (OR) no format {"atributo":"Valor"}
    * @param {Array} sort Atributos pelos quais se deseja o resultado ordenado
    */
-  getAll: function({ nomeModeloPlural = requiredParam("nomeModeloPlural"), filtroAND = [], filtroOR = [], sort = [] }) {
-    if (filtroAND != null && Array.isArray(filtroAND) && filtroAND.length > 0 && filtroOR != null && Array.isArray(filtroOR) && filtroOR.length > 0) {
-      console.warn(`Foi solicitado tanto filtro "AND" quanto filtro "OR". O segundo será preterido`);
+  getAll: function({
+    nomeModeloPlural = requiredParam('nomeModeloPlural'),
+    filtroAND = [],
+    filtroOR = [],
+    sort = [],
+  }) {
+    if (
+      filtroAND != null &&
+      Array.isArray(filtroAND) &&
+      filtroAND.length > 0 &&
+      filtroOR != null &&
+      Array.isArray(filtroOR) &&
+      filtroOR.length > 0
+    ) {
+      console.warn(
+        `Foi solicitado tanto filtro "AND" quanto filtro "OR". O segundo será preterido`,
+      );
     }
 
-    let fqs = "";
+    let fqs = '';
     if (filtroAND != null && Array.isArray(filtroAND) && filtroAND.length > 0) {
-      fqs += "filter={";
+      fqs += 'filter={';
       fqs += `"where":`;
       if (filtroAND.length > 1) {
         fqs += `{"and":[`;
       }
       for (let f = 0; f < filtroAND.length; f++) {
         if (f > 0) {
-          fqs += ",";
+          fqs += ',';
         }
-        fqs += "{";
+        fqs += '{';
         fqs += filtroAND[f];
-        fqs += "}";
+        fqs += '}';
       }
       if (filtroAND.length > 1) {
         fqs += `]}`;
       }
-    } else if (filtroOR != null && Array.isArray(filtroOR) && filtroOR.length > 0) {
-      const temInclude = fqs.indexOf("filter") > -1;
-      fqs += temInclude ? "," : "filter={";
+    } else if (
+      filtroOR != null &&
+      Array.isArray(filtroOR) &&
+      filtroOR.length > 0
+    ) {
+      const temInclude = fqs.indexOf('filter') > -1;
+      fqs += temInclude ? ',' : 'filter={';
       fqs += `"where":`;
       if (filtroOR.length > 1) {
         fqs += `{"or":[`;
       }
       for (let f = 0; f < filtroOR.length; f++) {
         if (f > 0) {
-          fqs += ",";
+          fqs += ',';
         }
-        fqs += "{";
+        fqs += '{';
         fqs += filtroOR[f];
-        fqs += "}";
+        fqs += '}';
       }
       if (filtroOR.length > 1) {
         fqs += `]}`;
       }
     }
     if (sort != null && Array.isArray(sort) && sort.length > 0) {
-      fqs += fqs.indexOf("filter") > -1 ? "," : "filter={";
+      fqs += fqs.indexOf('filter') > -1 ? ',' : 'filter={';
       fqs += `"order":[`;
       for (let f = 0; f < sort.length; f++) {
         if (f > 0) {
-          fqs += ",";
+          fqs += ',';
         }
         fqs += `"${sort[f]}"`;
       }
       fqs += `]`;
     }
-    fqs += "}";
+    fqs += '}';
 
-    //console.log(`/${nomeModeloPlural.toLowerCase()}?${fqs}`)
+    //console.log(`/${nomeModeloPlural.toLowerCase()}?${fqs}`, sort);
     return decoratorRemoteCall(`/${nomeModeloPlural.toLowerCase()}?${fqs}`);
   },
 
@@ -119,17 +137,23 @@ const Service = {
    * @param {Array} sort Atributos pelos quais se deseja o resultado ordenado
  
  */
-  getAllLike: function({ nomeModeloPlural = requiredParam("nomeModeloPlural"), filtroAND = [], expressaoFiltro, campos = [], sort = [] }) {
+  getAllLike: function({
+    nomeModeloPlural = requiredParam('nomeModeloPlural'),
+    filtroAND = [],
+    expressaoFiltro,
+    campos = [],
+    sort = [],
+  }) {
     //const c = encodeURI('%'); //bases relacionais
-    const c = encodeURI(".*"); //MongoDB
-    let fqs = "";
+    const c = encodeURI('.*'); //MongoDB
+    let fqs = '';
 
     if (filtroAND != null && Array.isArray(filtroAND) && filtroAND.length > 0) {
-      fqs += "filter={";
+      fqs += 'filter={';
       fqs += `"where":{"and":[`;
       for (let f = 0; f < filtroAND.length; f++) {
         if (f > 0) {
-          fqs += ",";
+          fqs += ',';
         }
         fqs += JSON.stringify(filtroAND[f]);
       }
@@ -138,23 +162,23 @@ const Service = {
         fqs += `]}`;
       }*/
     }
-    if (expressaoFiltro != null && expressaoFiltro != "") {
+    if (expressaoFiltro != null && expressaoFiltro != '') {
       //Colocando caracter escape quando existirem aspas
       expressaoFiltro = expressaoFiltro.replace(/"/g, `\\"`);
       //expressaoFiltro = expressaoFiltro.replace(':',encodeURI(`:`));
       expressaoFiltro = encodeURI(expressaoFiltro);
-      fqs += fqs.indexOf("filter") > -1 ? "," : "filter={";
+      fqs += fqs.indexOf('filter') > -1 ? ',' : 'filter={';
       //Se tiver mais no filtro, entende-se que os campos tem que ter todas os itens ao mesmo tempo
-      const filtrosAND = expressaoFiltro.split("+");
+      const filtrosAND = expressaoFiltro.split('+');
       //Se tiver vÃ­rgula no filtro, entende-se que os campos tem que ter ao menos um dos itens
       const filtrosOR = [];
       //as expressÃµes AND que tiverem ocorrências de ví­rgulas, serão transferidas por array {filtrosOR}
       //e adicionadas em outro array para que sejam removidas posteriormente do {filtrosAND}
       const removerDeFiltrosAND = [];
       filtrosAND.forEach(filtro => {
-        if (filtro.indexOf(",") >= 0) {
+        if (filtro.indexOf(',') >= 0) {
           removerDeFiltrosAND.push(filtro);
-          const partes = filtro.split(",");
+          const partes = filtro.split(',');
           partes.forEach(p => {
             filtrosOR.push(p.trim());
           });
@@ -183,7 +207,7 @@ const Service = {
 
           for (let f = 0; f < filtrosAND.length; f++) {
             if (f > 0 || filtrosOR[contaOR] != null) {
-              fqs += ",";
+              fqs += ',';
             }
             fqs += `{"${campos[i]}":{"like":"${c}${filtrosAND[f]}${c}","options":"i"}}`;
           }
@@ -200,17 +224,17 @@ const Service = {
       fqs += `]}`;
     }
     if (sort != null && Array.isArray(sort) && sort.length > 0) {
-      fqs += fqs.indexOf("filter") > -1 ? "," : "filter={";
+      fqs += fqs.indexOf('filter') > -1 ? ',' : 'filter={';
       fqs += `"order":[`;
       for (let f = 0; f < sort.length; f++) {
         if (f > 0) {
-          fqs += ",";
+          fqs += ',';
         }
         fqs += `"${sort[f]}"`;
       }
       fqs += `]`;
     }
-    fqs += "}";
+    fqs += '}';
 
     //console.log(`/${nomeModeloPlural.toLowerCase()}?${fqs}`);
     return axios.get(`/${nomeModeloPlural.toLowerCase()}?${fqs}`);
@@ -221,7 +245,7 @@ const Service = {
   },
 
   get: function({ nomeModeloPlural, id, include = [] }) {
-    const url = `/${nomeModeloPlural.toLowerCase()}/${id == null ? "" : id}`;
+    const url = `/${nomeModeloPlural.toLowerCase()}/${id == null ? '' : id}`;
     return axios.get(adicionaIncludeURL(url, include));
   },
 
@@ -234,7 +258,7 @@ const Service = {
   },
 
   insert: function({ nomeModeloPlural, instancia }) {
-    console.log(`/${nomeModeloPlural.toLowerCase()}/`, JSON.stringify(instancia))
+    //console.log(`/${nomeModeloPlural.toLowerCase()}/`, JSON.stringify(instancia))
     delete instancia.id;
     return axios.post(`/${nomeModeloPlural.toLowerCase()}/`, instancia);
   },
@@ -243,23 +267,28 @@ const Service = {
   },
   handleError: function(error) {
     if (error.response) {
-      alert("Code: " + error.response.data.error.code + "\r\nMessage: " + error.response.data.error.message);
+      alert(
+        'Code: ' +
+          error.response.data.error.code +
+          '\r\nMessage: ' +
+          error.response.data.error.message,
+      );
     } else {
-      console.log("Error", error.message);
+      console.log('Error', error.message);
     }
-  }
+  },
 };
 
 function adicionaIncludeURL(url, include = []) {
   if (include && include.length > 0) {
     for (let i = 0; i < include.length; i++) {
-      if (url.indexOf("?filter") > -1) {
+      if (url.indexOf('?filter') > -1) {
         url += `&`;
       } else {
         url += `?`;
       }
-      if (include[0].indexOf("|") > -1) {
-        const partesInclude = include[i].split("|");
+      if (include[0].indexOf('|') > -1) {
+        const partesInclude = include[i].split('|');
         url += `filter[include][${partesInclude[0]}]=${partesInclude[1]}`;
       } else {
         url += `filter[include]=${include[i]}`;

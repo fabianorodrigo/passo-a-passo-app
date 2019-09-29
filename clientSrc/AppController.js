@@ -33,7 +33,7 @@ class AppController {
       nomeEntidadePlural: 'Grupos',
       mantemState: true,
       camposObrigatorios: [{ atributo: 'titulo', label: 'Título' }],
-      especializacao: new GrupoController(this)
+      especializacao: new GrupoController(this),
     });
     AppController.geraController({
       app: this,
@@ -41,7 +41,7 @@ class AppController {
       nomeEntidadePlural: 'Papeis',
       mantemState: true,
       camposObrigatorios: [{ atributo: 'titulo', label: 'Título' }],
-      ordemCarga : ['titulo']
+      ordemCarga: ['titulo'],
     });
   }
 
@@ -59,8 +59,8 @@ class AppController {
   mostraMensagem(msg, tipo, cb) {
     //this._appUI.refs.popupMensagem.handleAlertShow(msg, tipo, cb);
     alert(msg);
-    if(cb){
-    cb();
+    if (cb) {
+      cb();
     }
   }
 
@@ -185,6 +185,28 @@ class AppController {
     app.controllers[nomeEntidade] = {
       mantemState: mantemState,
       especializacao: especializacao,
+      buscaPorId: async id => {
+        if (mantemState) {
+          return app.getState(nomeEntidadePlural)[id];
+        } else {
+          try {
+            app.setState('loading', true);
+            const response = await Service.get({
+              nomeModeloPlural: nomeEntidadePlural,
+              id,
+            });
+            return response.data;
+          } catch (e) {
+            console.error(`Exceção capturada em 'buscaPorId'`, e);
+            app.mostraMensagem(
+              `Falha ao buscar ${nomeEntidadePlural}`,
+              'error',
+            );
+          } finally {
+            app.setState('loading', false);
+          }
+        }
+      },
       carrega: () => {
         return carregaGenerico({
           app: app,
@@ -264,7 +286,7 @@ async function carregaGenerico({
     const response = await Service.getAll({
       nomeModeloPlural: nomeEntidadePlural,
       include: includesCarga,
-      ordemCarga,
+      sort: ordemCarga,
     });
     response.data.forEach(function(instancia) {
       instancias[instancia.id] = instancia;

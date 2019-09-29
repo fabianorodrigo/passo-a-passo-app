@@ -45,10 +45,8 @@ export class Procedimento extends Entity {
   })
   procedimentosRelacionados?: string[];
 
-  @property({
-    type: 'array',
-    itemType: 'object',
-    required: true,
+  @property.array(Passo,{
+    required: true
   })
   passos: Passo[];
 

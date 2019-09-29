@@ -8,6 +8,11 @@
   width: 420px !important;
 }
 
+ol {
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
 @media print {
   td {
     /* add this line for better support in chrome */

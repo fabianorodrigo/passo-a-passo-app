@@ -6,7 +6,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Tooltip from '@material-ui/core/Tooltip';
-import Slide from '@material-ui/core/Slide';
 
 import ReactMarkDown from 'react-markdown';
 import Breaks from 'remark-breaks';
@@ -71,14 +70,33 @@ export default function tableBlocosPassos(props) {
             {bloco.passos.map((passo, iPasso) => {
               if (passo.descricao != null && passo.descricao.trim() != '') {
                 passo.textoFinal = passo.descricao;
-              } else if (passo.executarId != null && passo.executarId != '') {
-                passo.textoFinal = passo.executarId.titulo;
+              } else if (passo.executarProcedimento != null) {
+                passo.textoFinal = passo.executarProcedimento.titulo;
               }
 
               return (
                 <TableRow key={`tr_${props.processo.id}_${iBloco}_${iPasso}`}>
                   <TableCell className={classes.tdPassos} width="1800">
-                    <div className={classes.mesmoLinha}>
+                    <div
+                      className={classes.mesmoLinha}
+                      style={
+                        passo.executarProcedimento
+                          ? {
+                              cursor: 'pointer',
+                              color: '#477778',
+                            }
+                          : null
+                      }
+                      onClick={
+                        passo.executarProcedimento
+                          ? e => {
+                              carregaProcedimentoStateGlobal(
+                                passo.executarProcedimento.id,
+                              );
+                            }
+                          : null
+                      }
+                    >
                       <ReactMarkDown
                         source={`${passo.ordem}. ${passo.textoFinal}`}
                         plugins={[Breaks]}
@@ -111,6 +129,18 @@ export default function tableBlocosPassos(props) {
       );
     },
   );
+
+  /**
+   * Busca na base o Procedimento com o id passado e seta a variável state global 'procedimentoPopup'
+   * @param {*} id
+   */
+  async function carregaProcedimentoStateGlobal(id) {
+    let p = null;
+    if (id) {
+      p = await props.app.controllers.Procedimento.buscaPorId(id);
+    }
+    props.app.setState('procedimentoPopup', p);
+  }
 }
 
 /**
@@ -133,7 +163,7 @@ function getBlocoPassos(processo, app) {
 
 const StyledTableCell = withStyles(theme => ({
   head: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: 'gray',
     color: theme.palette.common.white,
     padding: '2px',
   },

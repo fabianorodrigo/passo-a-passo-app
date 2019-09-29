@@ -73,6 +73,8 @@ class ProcedimentoController {
             grupoItens[p.idGrupo] = {
               id: p.idGrupo,
               titulo: this.app.getState('Grupos')[p.idGrupo].titulo,
+              tituloComposto: this.app.getState('Grupos')[p.idGrupo]
+                .tituloComposto,
               processos: [],
             };
           }

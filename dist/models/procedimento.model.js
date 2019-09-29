@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const repository_1 = require("@loopback/repository");
+const passo_model_1 = require("./passo.model");
 let Procedimento = class Procedimento extends repository_1.Entity {
     constructor(data) {
         super(data);
@@ -65,10 +66,8 @@ __decorate([
     __metadata("design:type", Array)
 ], Procedimento.prototype, "procedimentosRelacionados", void 0);
 __decorate([
-    repository_1.property({
-        type: 'array',
-        itemType: 'object',
-        required: true,
+    repository_1.property.array(passo_model_1.Passo, {
+        required: true
     }),
     __metadata("design:type", Array)
 ], Procedimento.prototype, "passos", void 0);

@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
   suggestionsContainerOpen: {
     position: 'absolute',
     zIndex: 1,
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(1),
     left: 0,
     right: 0,
   },
@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     listStyleType: 'none',
   },
   divider: {
-    height: theme.spacing.unit * 2,
+    height: theme.spacing(2),
   },
 }));
 
@@ -60,7 +60,7 @@ export default function formPasso(props) {
   const [passo, setPasso] = React.useState({
     idPapel: '',
     descricao: '',
-    executarId: '',
+    executarProcedimento: null,
   });
   const [textoAutosuggest, setTextoAutosuggest] = React.useState('');
   const [
@@ -89,7 +89,7 @@ export default function formPasso(props) {
     onSuggestionSelected: (event, suggestionSelection) => {
       setPasso({
         ...passo,
-        executarId: suggestionSelection.suggestion,
+        executarProcedimento: suggestionSelection.suggestion,
       });
     },
     getSuggestionValue,
@@ -161,7 +161,7 @@ export default function formPasso(props) {
             labelWidth={100}
           >
             <MenuItem value="descricao">Descrição textual</MenuItem>
-            <MenuItem value="executarId">
+            <MenuItem value="executarProcedimento">
               Executar outro procedimento registrado
             </MenuItem>
           </Select>
@@ -179,7 +179,7 @@ export default function formPasso(props) {
             multiline={true}
           />
         )}
-        {tipo === 'executarId' && (
+        {tipo === 'executarProcedimento' && (
           <Autosuggest
             {...autosuggestProps}
             inputProps={{
