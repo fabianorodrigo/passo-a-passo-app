@@ -66,7 +66,7 @@ export default function PapeisList(props) {
 
   return (
     <List className={classes.root}>
-      <Button
+      {props.app.getState("adminMode") && <Button
         variant="contained"
         size="small"
         className={classes.button}
@@ -76,12 +76,12 @@ export default function PapeisList(props) {
       >
         <AddIcon className={clsx(classes.leftIcon, classes.iconSmall)} />
         Novo
-      </Button>
+      </Button>}
       {Object.values(props.app.getState("Papeis")).map(p => {
         let avatarClass = null;
         if (p.titulo.toLowerCase().startsWith("fiscal")) {
           avatarClass = classes.orangeAvatar;
-        } else if (p.titulo.toLowerCase().startsWith("gestor")) {
+        } else if (p.titulo.toLowerCase().startsWith("gestor") || p.titulo.toLowerCase().startsWith("gerente")) {
           avatarClass = classes.redAvatar;
         } else if (p.titulo.toLowerCase().startsWith("gerente")) {
           avatarClass = classes.pinkAvatar;
@@ -95,18 +95,40 @@ export default function PapeisList(props) {
           <ListItem key={`liPapeis${p.id}`}>
             <ListItemAvatar>
               <Avatar className={avatarClass} alt={p.titulo}>
-                {p.titulo.substr(0, 2)}
+                {getSiglaPapel(p.titulo)}
               </Avatar>
             </ListItemAvatar>
             <ListItemText primary={p.titulo} secondary={p.descricao} />
-            <ListItemSecondaryAction>
+            {props.app.getState("adminMode") && <ListItemSecondaryAction>
               <IconButton edge="end" aria-label="Editar">
                 <EditIcon />
               </IconButton>
-            </ListItemSecondaryAction>
+            </ListItemSecondaryAction>}
           </ListItem>
         );
       })}
     </List>
   );
+}
+
+function getSiglaPapel(titulo){
+  const partes = titulo.split(' ');
+  if(partes.length < 2){
+    return titulo.substr(0, 2);
+  } else if(partes.length == 2){
+    return partes[0].substr(0,1).concat(partes[1].substr(0,1));
+  } else{
+    let retorno = partes[0].substr(0,1);
+    for(let i = 1; i < partes.length;i++){
+      //Pega a próxima parte que inicia com maiúscula
+      if(partes[i].substr(0,1) === partes[i].substr(0,1).toUpperCase()){
+        retorno += partes[i].substr(0,1);
+        break;
+      }
+    }
+    if(retorno.length == 1){
+      retorno += partes[partes.length-1].substr(0,1);
+    }
+    return retorno;
+  }
 }

@@ -56,21 +56,15 @@ export default function mainListItems(props) {
     <div>
       {menuGruposProcessos(classes, aberto, grupos)}
       <Divider />
-      {props.app.getState("adminMode") && (
-        <List
-          onClick={event => {
-            setSelectedIndex(-1);
-            props.setGrupoIdFiltro("");
-          }}
-          component="nav"
-          aria-labelledby="nested-list-subheader"
-          subheader={
-            <ListSubheader component="div" id="nested-list-subheader">
-              {props.menuExpandido ? "Administração" : "Admin"}
-            </ListSubheader>
-          }
-          className={classes.root}
-        >
+      <List
+        onClick={event => {
+          setSelectedIndex(-1);
+          props.setGrupoIdFiltro("");
+        }}
+        component="nav"
+        aria-labelledby="nested-list-subheader"
+        className={classes.root}
+      >{props.app.getState("adminMode") && (
           <ListItem
             button
             onClick={() => {
@@ -82,20 +76,20 @@ export default function mainListItems(props) {
             </ListItemIcon>
             <ListItemText primary="Procedimentos" />
           </ListItem>
-          <ListItem button onClick={props.onClick.bind(null, "grupos")}>
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Grupos" />
-          </ListItem>
-          <ListItem button onClick={props.onClick.bind(null, "papeis")}>
-            <ListItemIcon>
-              <PeopleIcon />
-            </ListItemIcon>
-            <ListItemText primary="Papéis" />
-          </ListItem>
-        </List>
-      )}
+        )}
+        {props.app.getState("adminMode") && (<ListItem button onClick={props.onClick.bind(null, "grupos")}>
+          <ListItemIcon>
+            <DashboardIcon />
+          </ListItemIcon>
+          <ListItemText primary="Grupos" />
+        </ListItem>)}
+        <ListItem button onClick={props.onClick.bind(null, "papeis")}>
+          <ListItemIcon>
+            <PeopleIcon />
+          </ListItemIcon>
+          <ListItemText primary="Papéis" />
+        </ListItem>
+      </List>
     </div>
   );
 
