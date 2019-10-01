@@ -5,11 +5,11 @@ module.exports = {
       script: './index.js',
       env: {
         NODE_ENV: 'development',
-        GOOGLE_API_KEY: 'teste',
+        PORT: 3015,
       },
       env_production: {
         NODE_ENV: 'production',
-        GOOGLE_API_KEY: 'teste',
+        PORT: 3015,
       },
     },
   ],
