@@ -49,8 +49,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function formProcedimento(props) {
   const classes = useStyles();
-
-  const [processo, setProcesso] = React.useState({
+  console.log(props.procedimento);
+  const [processo, setProcesso] = React.useState(props.procedimento? props.procedimento : {
     id: null,
     titulo: '',
     quando: '',
@@ -60,9 +60,11 @@ export default function formProcedimento(props) {
     procedimentosRelacionados: [],
     passos: [],
   });
+  console.log(processo)
 
   const handleClose = () => {
     props.app.setState(props.formName, false);
+    props.app.setState('procedimentoEditado', null);
   };
   const handleSalvar = () => {
     const p = JSON.parse(JSON.stringify(processo));

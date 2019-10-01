@@ -95,7 +95,6 @@ export default function formPasso(props) {
     getSuggestionValue,
     renderSuggestion,
   };
-
   return (
     <Dialog
       open={props.app.getState(props.formName) || false}

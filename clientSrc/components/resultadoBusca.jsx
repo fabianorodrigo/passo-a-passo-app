@@ -1,53 +1,56 @@
-import React from 'react';
-import { makeStyles, styled } from '@material-ui/core/styles';
-import Collapse from '@material-ui/core/Collapse';
-import Box from '@material-ui/core/Box';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Typography from '@material-ui/core/Typography';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import Grid from '@material-ui/core/Grid';
+import React from "react";
+import { makeStyles, styled } from "@material-ui/core/styles";
+import Collapse from "@material-ui/core/Collapse";
+import Box from "@material-ui/core/Box";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import Typography from "@material-ui/core/Typography";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import Grid from "@material-ui/core/Grid";
+import EditIcon from "@material-ui/icons/EditTwoTone";
+import clsx from "clsx";
+import Button from "@material-ui/core/Button";
 
-import TableBlocoPassos from './tableBlocosPassos';
+import TableBlocoPassos from "./tableBlocosPassos";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: '100%',
-    maxWidth: '1800px',
+    width: "100%",
+    maxWidth: "1800px",
     backgroundColor: theme.palette.background.paper,
-    padding: '0px',
+    padding: "0px"
   },
   tooltip: {
     popper: {
-      backgroundColor: 'yellow',
+      backgroundColor: "yellow"
     },
     tooltip: {
-      backgroundColor: 'yellow',
-    },
+      backgroundColor: "yellow"
+    }
   },
   processo: {
-    display: 'block',
+    display: "block"
   },
   grupo: {
-    color: 'black',
-    fontWeight: 'bold',
+    color: "black",
+    fontWeight: "bold"
   },
   title: {
     flexGrow: 1,
-    textAlign: 'left',
+    textAlign: "left"
   },
   table: {
-    display: 'block',
+    display: "block"
   },
   tdPassos: {
-    paddingTop: '1px',
-    paddingBottom: '1px',
+    paddingTop: "1px",
+    paddingBottom: "1px"
   },
   nested: {
-    paddingLeft: theme.spacing(4),
-  },
+    paddingLeft: theme.spacing(4)
+  }
 }));
 
 export default function ResultadoBusca(props) {
@@ -81,51 +84,17 @@ export default function ResultadoBusca(props) {
                 <ListItemText
                   className={classes.grupo}
                   key={`liResultadoGrupo${idGrupo}`}
-                  primary={
-                    props.app.getState('resultadoBuscaProcedimentos')[idGrupo]
-                      .tituloComposto
-                  }
+                  primary={props.app.getState("resultadoBuscaProcedimentos")[idGrupo].tituloComposto}
                 />
-                {fechado.indexOf(idGrupo) === -1 ? (
-                  <ExpandLess key={`iconExpandLess${idGrupo}`} />
-                ) : (
-                  <ExpandMore key={`iconExpandMore${idGrupo}`} />
-                )}
+                {fechado.indexOf(idGrupo) === -1 ? <ExpandLess key={`iconExpandLess${idGrupo}`} /> : <ExpandMore key={`iconExpandMore${idGrupo}`} />}
               </StyledListItem>
-              <Collapse
-                key={`collapse${idGrupo}`}
-                in={fechado == null || fechado.indexOf(idGrupo) === -1}
-                timeout="auto"
-                unmountOnExit
-              >
-                <List
-                  component="nav"
-                  disablePadding
-                  key={`listFilhos${idGrupo}`}
-                >
-                  {props.dados.resultadoBuscaProcedimentos[
-                    idGrupo
-                  ].processos.map((p, iProcesso) => {
+              <Collapse key={`collapse${idGrupo}`} in={fechado == null || fechado.indexOf(idGrupo) === -1} timeout="auto" unmountOnExit>
+                <List component="nav" disablePadding key={`listFilhos${idGrupo}`}>
+                  {props.dados.resultadoBuscaProcedimentos[idGrupo].processos.map((p, iProcesso) => {
                     return (
-                      <ListItem
-                        padding="0"
-                        key={`li${p.id}`}
-                        className={classes.processo}
-                      >
-                        <Box
-                          borderRadius="borderRadius"
-                          borderColor="text.primary"
-                          margin="0"
-                          border={1}
-                          padding="7px"
-                          bgcolor="#E8E8E8"
-                        >
-                          <Typography
-                            component="h1"
-                            variant="h6"
-                            color="inherit"
-                            className={classes.title}
-                          >
+                      <ListItem padding="0" key={`li${p.id}`} className={classes.processo}>
+                        <Box borderRadius="borderRadius" borderColor="text.primary" margin="0" border={1} padding="7px" bgcolor="#E8E8E8">
+                          <Typography component="h1" variant="h6" color="inherit" className={classes.title}>
                             {p.titulo}
                           </Typography>
                           <b>Quando: </b>
@@ -133,15 +102,28 @@ export default function ResultadoBusca(props) {
                           <br />
                           <Grid container spacing={3}>
                             <Grid item xs>
-                              <b style={{ color: 'blue' }}>Entradas: </b>
-                              {p.entradas.join(', ')}
+                              <b style={{ color: "blue" }}>Entradas: </b>
+                              {p.entradas.join(", ")}
                             </Grid>
                             <Grid item xs>
-                              <b style={{ color: 'red' }}>Saídas: </b>
-                              {p.saidas.join(', ')}
+                              <b style={{ color: "red" }}>Saídas: </b>
+                              {p.saidas.join(", ")}
                             </Grid>
                           </Grid>
                           <TableBlocoPassos processo={p} app={props.app} />
+                          {props.app.getState("adminMode") && (
+                            <Button
+                              variant="contained"
+                              size="small"
+                              className={classes.button}
+                              onClick={() => {
+                                props.app.appUI.refs.formProcedimento.abreForm(p);
+                              }}
+                            >
+                              <EditIcon className={clsx(classes.leftIcon, classes.iconSmall)} />
+                              Editar
+                            </Button>
+                          )}
                         </Box>
                       </ListItem>
                     );
@@ -156,10 +138,10 @@ export default function ResultadoBusca(props) {
 }
 
 const StyledListItem = styled(ListItem)({
-  '&.Mui-selected': {
-    backgroundColor: '#b9d4d6',
+  "&.Mui-selected": {
+    backgroundColor: "#b9d4d6"
   },
-  '&.Mui-selected:hover': {
-    backgroundColor: '#b9d4d6',
-  },
+  "&.Mui-selected:hover": {
+    backgroundColor: "#b9d4d6"
+  }
 });

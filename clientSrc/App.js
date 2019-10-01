@@ -6,13 +6,14 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import AppController from './AppController';
 
 //componentes
-import FormProcedimento from './components/formProcedimento';
+import FormProcedimento from './components/FormProcedimento';
 import FormPapel from './components/formPapel';
 import PopupProcedimento from './components/popupProcedimento';
 import Mensagem from './components/mensagem';
 //import Popup from "./components/popup";
 
 //serviços
+
 
 class App extends Component {
   constructor(props, context) {
@@ -74,9 +75,10 @@ class App extends Component {
     return (
       <div className="App">
         <CssBaseline />
-        <FormProcedimento
+        <FormProcedimento ref="formProcedimento"
           app={this._appController}
-          formName="formProcedimento"
+          grupos={this.state.dados.GruposOrdemHierarquica}
+          procedimento={this.state.dados.procedimentoEditado}
         />
         <PopupProcedimento
           app={this._appController}

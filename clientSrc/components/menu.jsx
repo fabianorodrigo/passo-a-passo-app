@@ -68,13 +68,13 @@ export default function mainListItems(props) {
           <ListItem
             button
             onClick={() => {
-              props.app.setState("formProcedimento", true);
+              props.app.appUI.refs.formProcedimento.abreForm();
             }}
           >
             <ListItemIcon>
               <FileCopyIcon />
             </ListItemIcon>
-            <ListItemText primary="Procedimentos" />
+            <ListItemText primary="Novo Procedimento" />
           </ListItem>
         )}
         {props.app.getState("adminMode") && (<ListItem button onClick={props.onClick.bind(null, "grupos")}>

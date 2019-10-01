@@ -347,6 +347,7 @@ async function salvaGenerico({
         response = await Service.update({
           nomeModeloPlural: nomeEntidadePlural,
           instancia: instancia,
+          id: instancia.id
         });
       }
       if (mantemState) {

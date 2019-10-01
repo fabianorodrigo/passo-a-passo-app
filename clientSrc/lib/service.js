@@ -249,8 +249,9 @@ const Service = {
     return axios.get(adicionaIncludeURL(url, include));
   },
 
-  update: function({ nomeModeloPlural, instancia }) {
-    return axios.put(`/${nomeModeloPlural.toLowerCase()}/`, instancia);
+  update: function({ nomeModeloPlural, instancia, id }) {
+    console.log(`/${nomeModeloPlural.toLowerCase()}/`, JSON.stringify(instancia))
+    return axios.put(`/${nomeModeloPlural.toLowerCase()}/${id}`, instancia);
   },
 
   patch: function({ nomeModeloPlural, instancia }) {
