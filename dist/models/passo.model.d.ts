@@ -5,5 +5,6 @@ export declare class Passo extends Model {
     descricao: string;
     executarProcedimento: Procedimento;
     ordem: number;
+    dica: string;
     constructor(data?: Partial<Passo>);
 }

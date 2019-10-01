@@ -44,6 +44,13 @@ __decorate([
     }),
     __metadata("design:type", Number)
 ], Passo.prototype, "ordem", void 0);
+__decorate([
+    repository_1.property({
+        type: 'string',
+        required: false,
+    }),
+    __metadata("design:type", String)
+], Passo.prototype, "dica", void 0);
 Passo = __decorate([
     repository_1.model({ settings: {} }),
     __metadata("design:paramtypes", [Object])

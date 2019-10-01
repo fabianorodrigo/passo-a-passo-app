@@ -202,6 +202,17 @@ export default function formPasso(props) {
             )}
           />
         )}
+        <TextField
+            label="Dica"
+            onChange={onChange}
+            id="dica"
+            name="dica"
+            className={classes.textField}
+            margin="normal"
+            variant="outlined"
+            fullWidth
+            placeholder="Coloque alguma informação complementar que deve aparecer na forma de 'tooltip'"
+          />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">

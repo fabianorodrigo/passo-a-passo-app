@@ -27,6 +27,12 @@ export class Passo extends Model {
   })
   ordem: number;
 
+  @property({
+    type: 'string',
+    required: false,
+  })
+  dica: string;
+
   constructor(data?: Partial<Passo>) {
     super(data);
   }

@@ -110,6 +110,9 @@ export default class FormProcedimento extends Component {
       } else {
         delete passo.executarProcedimento;
       }
+      if(passo.dica == null){
+        delete passo.dica;
+      }
     });
     this.props.app.salva("Procedimento", p, () => {
       this.fechaForm();
@@ -120,6 +123,7 @@ export default class FormProcedimento extends Component {
     let processo = this.state.processo;
     const p = JSON.parse(JSON.stringify(passo)); //clonar objeto recebido
     p.ordem = this.state.processo.passos.length + 1;
+    console.log(passo)
     processo.passos.push(p);
     this.setState({processo});
   }
