@@ -115,7 +115,8 @@ export default function tableBlocosPassos(props) {
                         color="default"
                         aria-label="add"
                         className={classes.right}
-                        onClick={props.onDelete.bind(null, passo.ordem)}
+                        onClick={()=>{
+                          props.onDelete(passo.ordem)}}
                       >
                         <RemoveIcon />
                       </Fab>

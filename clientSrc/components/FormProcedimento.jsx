@@ -110,7 +110,7 @@ export default class FormProcedimento extends Component {
       } else {
         delete passo.executarProcedimento;
       }
-      if(passo.dica == null){
+      if (passo.dica == null) {
         delete passo.dica;
       }
     });
@@ -123,39 +123,56 @@ export default class FormProcedimento extends Component {
     let processo = this.state.processo;
     const p = JSON.parse(JSON.stringify(passo)); //clonar objeto recebido
     p.ordem = this.state.processo.passos.length + 1;
-    console.log(passo)
     processo.passos.push(p);
-    this.setState({processo});
+    this.setState({ processo });
   }
 
   deletePasso(ordem) {
-    const p = JSON.parse(JSON.stringify(processo));
-    p.passos.splice(
-      p.passos.findIndex(elemento => {
+    let processo = this.state.processo;
+    processo.passos.splice(
+      processo.passos.findIndex(elemento => {
         return elemento.ordem == ordem;
       }),
       1
     );
-    p.passos.forEach((passo, i) => {
+    processo.passos.forEach((passo, i) => {
       passo.ordem = i + 1;
     });
-    setProcesso(p);
+    this.setState({ processo });
   }
 
-  addInStringArray(nomeArray, promptLabel){
+  reorderPasso(ordem, direcao) {
+    let processo = this.state.processo;
+    const indice = processo.passos.findIndex(elemento => {
+      return elemento.ordem == ordem;
+    });
+    if (indice > -1) {
+      //Não pode subir o primeiro nem descer o último
+      if ((ordem == 0 && direcao < 0) || (ordem == processo.passos.length - 1 && direcao > 0)) {
+        return null;
+      } else {
+        if (direcao < 0) {
+          //TODO: Implementar move
+        }
+      }
+    }
+    this.setState({ processo });
+  }
+
+  addInStringArray(nomeArray, promptLabel) {
     let processo = this.state.processo;
     const valor = window.prompt(promptLabel ? promptLabel : nomeArray);
-    if (valor != null && valor.trim() != '') {
+    if (valor != null && valor.trim() != "") {
       processo[nomeArray].push(valor);
     }
     this.setState(processo);
-  };
+  }
 
-  removeInStringArray(nomeArray, valor){
+  removeInStringArray(nomeArray, valor) {
     let processo = this.state.processo;
     processo[nomeArray].splice(processo[nomeArray].indexOf(valor), 1);
     this.setState(processo);
-  };
+  }
 
   render() {
     return (
@@ -193,7 +210,7 @@ export default class FormProcedimento extends Component {
           />
           <fieldset>
             <legend>Passos</legend>
-            <TableBlocoPassos processo={this.state.processo} app={this.props.app} onDelete={this.deletePasso} />
+            <TableBlocoPassos processo={this.state.processo} app={this.props.app} onDelete={this.deletePasso.bind(this)} />
             <br />
             <AddButton
               onClick={() => {
