@@ -74,6 +74,9 @@ export default function formProcedimento(props) {
             delete passo.executarProcedimento[atributo];
           }
         });
+        delete passo.descricao;
+      } else{
+        delete passo.executarProcedimento;
       }
     });
     props.app.salva('Procedimento', p, () => {

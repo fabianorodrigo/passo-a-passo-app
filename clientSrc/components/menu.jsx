@@ -127,9 +127,7 @@ export default function mainListItems(props) {
                   props.setGrupoIdFiltro(g.id);
                   if (g.filhos != null) {
                     handleToggle(g.id);
-                  } else {
-                    props.onClick(null, g.id);
-                  }
+                  } 
                 }}
               >
                 <ListItemIcon key={`liMenuIcon${g.id}`}>
@@ -170,9 +168,7 @@ export default function mainListItems(props) {
                       props.setGrupoIdFiltro(gf.id);
                       if (gf.filhos != null) {
                         handleToggle(gf.id);
-                      } else {
-                        props.onClick(null, gf.id);
-                      }
+                      } 
                     }}
                   >
                     <ListItemIcon key={`liMenuIcon${gf.id}`}>
