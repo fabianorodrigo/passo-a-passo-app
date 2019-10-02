@@ -148,15 +148,22 @@ export default class FormProcedimento extends Component {
     });
     if (indice > -1) {
       //Não pode subir o primeiro nem descer o último
-      if ((ordem == 0 && direcao < 0) || (ordem == processo.passos.length - 1 && direcao > 0)) {
+      if ((indice == 0 && direcao < 0) || (indice == processo.passos.length - 1 && direcao > 0)) {
         return null;
       } else {
         if (direcao < 0) {
-          //TODO: Implementar move
+          processo.passos[indice - 1].ordem++;
+          processo.passos[indice].ordem--;
+        } else if (direcao > 0) {
+          processo.passos[indice].ordem++;
+          processo.passos[indice + 1].ordem--;
         }
+        processo.passos.sort((a, b) => {
+          return a.ordem - b.ordem;
+        });
       }
+      this.setState({ processo });
     }
-    this.setState({ processo });
   }
 
   addInStringArray(nomeArray, promptLabel) {
@@ -210,7 +217,7 @@ export default class FormProcedimento extends Component {
           />
           <fieldset>
             <legend>Passos</legend>
-            <TableBlocoPassos processo={this.state.processo} app={this.props.app} onDelete={this.deletePasso.bind(this)} />
+            <TableBlocoPassos processo={this.state.processo} app={this.props.app} onDelete={this.deletePasso.bind(this)} onReorder={this.reorderPasso.bind(this)} />
             <br />
             <AddButton
               onClick={() => {
