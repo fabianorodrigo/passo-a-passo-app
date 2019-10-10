@@ -14,6 +14,7 @@ import Fab from "@material-ui/core/Fab";
 import RemoveIcon from "@material-ui/icons/Remove";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
+import EditIcon from "@material-ui/icons/Edit";
 import IdeaIcon from "@material-ui/icons/EmojiObjectsOutlined";
 
 const useStyles = makeStyles(theme => ({
@@ -50,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function tableBlocosPassos(props) {
   const classes = useStyles();
-
+  console.log(props, typeof(props.formEditPasso) == 'function'?props.formEditPasso():'');
   return getBlocoPassos(props.processo, props.app).map((bloco, iBloco, arrayOrigem) => {
     return (
       <Table className={classes.table} key={`tb_${props.processo.id}_${iBloco}`} size="small">
@@ -105,7 +106,7 @@ export default function tableBlocosPassos(props) {
                     <Fab
                       size="small"
                       color="default"
-                      aria-label="add"
+                      aria-label="remove"
                       className={classes.right}
                       onClick={() => {
                         props.onDelete(passo.ordem);
@@ -138,6 +139,19 @@ export default function tableBlocosPassos(props) {
                       }}
                     >
                       <ArrowDownwardIcon />
+                    </Fab>
+                  )}
+                  {props.onEdit && (
+                    <Fab
+                      size="small"
+                      color="default"
+                      aria-label="edit"
+                      className={classes.right}
+                      onClick={() => {
+                        props.formEditPasso().abreForm(passo);
+                      }}
+                    >
+                      <EditIcon />
                     </Fab>
                   )}
                 </TableCell>

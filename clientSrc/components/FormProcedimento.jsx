@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { findDOMNode } from "react-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 
@@ -10,7 +11,7 @@ import Grid from "@material-ui/core/Grid";
 
 import { TextInput, AddButton, SelectInput, ChipSmall } from "../lib/form";
 import TableBlocoPassos from "./tableBlocosPassos";
-import FormPasso from "./formPasso";
+import FormPasso from "./FormPasso";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -46,7 +47,7 @@ const useStyles = makeStyles(theme => ({
 export default class FormProcedimento extends Component {
   constructor(props, context) {
     super(props, context);
-
+    this.formPasso = React.createRef();
     this.state = {
       visible: false,
       grupos: [],
@@ -127,6 +128,14 @@ export default class FormProcedimento extends Component {
     this.setState({ processo });
   }
 
+  editPasso(ordem) {
+    let processo = this.state.processo;
+    const p = JSON.parse(JSON.stringify(passo)); //clonar objeto recebido
+    p.ordem = this.state.processo.passos.length + 1;
+    processo.passos.push(p);
+    this.setState({ processo });
+  }
+
   deletePasso(ordem) {
     let processo = this.state.processo;
     processo.passos.splice(
@@ -184,7 +193,7 @@ export default class FormProcedimento extends Component {
   render() {
     return (
       <Dialog open={this.state.visible} onClose={this.fechaForm} aria-labelledby="form-dialog-title" fullScreen>
-        <FormPasso app={this.props.app} formName="formPasso" onSalvar={this.addPasso.bind(this)} />
+        <FormPasso app={this.props.app} ref={this.formPasso} onSalvar={this.addPasso.bind(this)} />
         <DialogTitle id="form-dialog-title">Procedimento</DialogTitle>
         <DialogContent>
           <TextInput
@@ -217,11 +226,18 @@ export default class FormProcedimento extends Component {
           />
           <fieldset>
             <legend>Passos</legend>
-            <TableBlocoPassos processo={this.state.processo} app={this.props.app} onDelete={this.deletePasso.bind(this)} onReorder={this.reorderPasso.bind(this)} />
+            <TableBlocoPassos
+              processo={this.state.processo}
+              app={this.props.app}
+              onDelete={this.deletePasso.bind(this)}
+              onReorder={this.reorderPasso.bind(this)}
+              formEditPasso={this.formPasso.current}
+              onEdit={this.editPasso.bind(this)}
+            />
             <br />
             <AddButton
               onClick={() => {
-                this.props.app.setState("formPasso", true);
+                this.formPasso.current.abreForm();
               }}
             />
           </fieldset>
