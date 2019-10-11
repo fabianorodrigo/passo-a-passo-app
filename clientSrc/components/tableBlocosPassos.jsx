@@ -51,7 +51,6 @@ const useStyles = makeStyles(theme => ({
 
 export default function tableBlocosPassos(props) {
   const classes = useStyles();
-  console.log(props, typeof(props.formEditPasso) == 'function'?props.formEditPasso():'');
   return getBlocoPassos(props.processo, props.app).map((bloco, iBloco, arrayOrigem) => {
     return (
       <Table className={classes.table} key={`tb_${props.processo.id}_${iBloco}`} size="small">
@@ -148,7 +147,7 @@ export default function tableBlocosPassos(props) {
                       aria-label="edit"
                       className={classes.right}
                       onClick={() => {
-                        props.formEditPasso().abreForm(passo);
+                        props.formEditPasso.current.abreForm(passo);
                       }}
                     >
                       <EditIcon />

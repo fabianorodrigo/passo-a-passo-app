@@ -128,12 +128,16 @@ export default class FormProcedimento extends Component {
     this.setState({ processo });
   }
 
-  editPasso(ordem) {
+  editPasso(passo) {
     let processo = this.state.processo;
-    const p = JSON.parse(JSON.stringify(passo)); //clonar objeto recebido
-    p.ordem = this.state.processo.passos.length + 1;
-    processo.passos.push(p);
-    this.setState({ processo });
+    const indice = processo.passos.findIndex(elemento => {
+      return elemento.ordem == passo.ordem;
+    });
+    if (indice > -1) {
+      let processo = this.state.processo;
+      processo.passos[indice] = passo;
+      this.setState({ processo });
+    }
   }
 
   deletePasso(ordem) {
@@ -193,7 +197,7 @@ export default class FormProcedimento extends Component {
   render() {
     return (
       <Dialog open={this.state.visible} onClose={this.fechaForm} aria-labelledby="form-dialog-title" fullScreen>
-        <FormPasso app={this.props.app} ref={this.formPasso} onSalvar={this.addPasso.bind(this)} />
+        <FormPasso app={this.props.app} ref={this.formPasso} onIncluir={this.addPasso.bind(this)} onEditar={this.editPasso.bind(this)} />
         <DialogTitle id="form-dialog-title">Procedimento</DialogTitle>
         <DialogContent>
           <TextInput
@@ -231,7 +235,7 @@ export default class FormProcedimento extends Component {
               app={this.props.app}
               onDelete={this.deletePasso.bind(this)}
               onReorder={this.reorderPasso.bind(this)}
-              formEditPasso={this.formPasso.current}
+              formEditPasso={this.formPasso}
               onEdit={this.editPasso.bind(this)}
             />
             <br />

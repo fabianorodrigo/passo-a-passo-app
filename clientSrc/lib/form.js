@@ -62,7 +62,7 @@ function SelectInput(props) {
 function AutoSuggestInput(props) {
   const classes = useStyles();
   let timeout = React.useRef(null);
-  const [textoAutosuggest, setTextoAutosuggest] = React.useState("");
+  const [textoAutosuggest, setTextoAutosuggest] = React.useState(props.selectedLabel?props.selectedLabel:"");
   const [listaAutosuggest, setListaAutosuggest] = React.useState([]);
 
   function renderSuggestion(suggestion, { query, isHighlighted }) {

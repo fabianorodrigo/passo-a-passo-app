@@ -7,39 +7,6 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { TextInput, SelectInput, AutoSuggestInput } from "../lib/form";
-import Autosuggest from "react-autosuggest";
-import Paper from "@material-ui/core/Paper";
-import Popper from "@material-ui/core/Popper";
-import deburr from "lodash/deburr";
-import match from "autosuggest-highlight/match";
-import parse from "autosuggest-highlight/parse";
-
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: "flex",
-    flexWrap: "wrap"
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    minWidth: 540
-  },
-  margin: {
-    margin: theme.spacing(3)
-  },
-  marginLeft: {
-    marginLeft: "15px"
-  },
-  dense: {
-    marginTop: theme.spacing(2)
-  },
-  menu: {
-    width: 200
-  },
-  chip: {
-    margin: theme.spacing(0)
-  }
-}));
 
 /***
  * If you need a state in your component you will either need to create a class component or you
@@ -65,7 +32,7 @@ export default class FormPasso extends Component {
   abreForm(passo) {
     this.setState({ visible: true });
     if (passo != null) {
-      this.setState({ passo });
+      this.setState({ passo, tipo: (passo.descricao && passo.descricao.trim() != ''?'descricao': 'executarProcedimento')});
     } else {
       this.setState({
         passo: {
@@ -93,7 +60,11 @@ export default class FormPasso extends Component {
   }
 
   salva() {
-    this.props.onSalvar(this.state.passo);
+    if(this.state.passo.ordem == null){
+    this.props.onIncluir(this.state.passo);
+    } else{
+      this.props.onEditar(this.state.passo);
+    }
     this.fechaForm();
   }
 
@@ -150,6 +121,8 @@ export default class FormPasso extends Component {
                 this.setState({ passo });
               }}
               buscaSugestoes={this.buscaSugestoesProcedimentos.bind(this)}
+              selectedId={this.state.passo.executarProcedimento.id}
+              selectedLabel={this.state.passo.executarProcedimento.titulo}
             />
           )}
           <TextInput
@@ -169,7 +142,7 @@ export default class FormPasso extends Component {
             Fechar
           </Button>
           <Button onClick={this.salva.bind(this)} color="primary">
-            Incluir
+            Confirmar
           </Button>
         </DialogActions>
       </Dialog>
