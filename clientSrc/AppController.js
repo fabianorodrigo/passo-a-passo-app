@@ -58,10 +58,8 @@ class AppController {
 
   mostraMensagem(msg, tipo, cb) {
     //this._appUI.refs.popupMensagem.handleAlertShow(msg, tipo, cb);
-    alert(msg);
-    if (cb) {
-      cb();
-    }
+    //alert(msg);
+    this._appUI.mostraMensagem(msg, tipo, cb);
   }
 
   get appUI() {

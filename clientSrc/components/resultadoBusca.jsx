@@ -10,8 +10,10 @@ import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import Grid from "@material-ui/core/Grid";
 import EditIcon from "@material-ui/icons/EditTwoTone";
+import LinkTwoToneIcon from "@material-ui/icons/LinkTwoTone";
 import clsx from "clsx";
 import Button from "@material-ui/core/Button";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import TableBlocoPassos from "./tableBlocosPassos";
 
@@ -50,6 +52,10 @@ const useStyles = makeStyles(theme => ({
   },
   nested: {
     paddingLeft: theme.spacing(4)
+  },
+  mesmoLinha: {
+    display: "inline-block",
+    padding: "0px"
   }
 }));
 
@@ -94,9 +100,21 @@ export default function ResultadoBusca(props) {
                     return (
                       <ListItem padding="0" key={`li${p.id}`} className={classes.processo}>
                         <Box borderRadius="borderRadius" borderColor="text.primary" margin="0" border={1} padding="7px" bgcolor="#E8E8E8">
-                          <Typography component="h1" variant="h6" color="inherit" className={classes.title}>
-                            {p.titulo}
-                          </Typography>
+                          <div>
+                            <Typography component="h1" variant="h6" color="inherit" className={clsx(classes.title, classes.mesmoLinha)}>
+                              {p.titulo}
+                            </Typography>{" "}
+                            <Tooltip title={"Copiar link do processo para área de transferência"}><LinkTwoToneIcon alt="Copiar" className={classes.mesmoLinha} style={{cursor: 'pointer'}} onClick={(e)=>{
+                               const input = document.createElement('input');
+                               input.setAttribute('value', `${location.origin}?id=${p.id}`);
+                               document.body.appendChild(input);
+                               input.select();
+                               document.execCommand('copy');
+                               document.body.removeChild(input)
+                               props.app.mostraMensagem(`Link do procedimento copiado para a área de transferência`,null,null);
+                            }} />
+                            </Tooltip>
+                          </div>
                           <b>Quando: </b>
                           {p.quando}
                           <br />
