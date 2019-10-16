@@ -10,6 +10,7 @@ import AppController from "./AppController";
 import FormProcedimento from "./components/FormProcedimento";
 import FormPapel from "./components/formPapel";
 import PopupProcedimento from "./components/popupProcedimento";
+import FormComunicacao from "./components/FormComunicacao";
 import Mensagem from "./components/mensagem";
 //import Popup from "./components/popup";
 
@@ -21,6 +22,8 @@ class App extends Component {
     this._appController = new AppController(this);
 
     let logado = sessionStorage.getItem("access_token") != null;
+
+    this.formComunicacao = React.createRef();
 
     this.state = {
       usuarioLogado: logado,
@@ -104,8 +107,9 @@ class App extends Component {
         />
         <PopupProcedimento app={this._appController} formName="popupProcedimento" procedimento={this.state.dados.procedimentoPopup} />
         <FormPapel app={this._appController} formName="formPapel" />
+        <FormComunicacao app={this.props.app} ref={this.formComunicacao} />
         <div className="App-body">
-          <Main app={this._appController} dados={this.state.dados} />
+          <Main app={this._appController} dados={this.state.dados} formComunicacao={this.formComunicacao} />
         </div>
       </div>
     );

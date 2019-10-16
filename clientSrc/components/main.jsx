@@ -144,7 +144,7 @@ export default function Main(props) {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container className={classes.container}>
-          {menu == "procedimentos" && <Resultados textoFiltro={textoFiltro} dados={props.dados} app={props.app} />}
+          {menu == "procedimentos" && <Resultados textoFiltro={textoFiltro} dados={props.dados} app={props.app} formComunicacao={props.formComunicacao} />}
           {menu == "grupos" && <ListaContratos />}
           {menu == "papeis" && <ListaPapeis app={props.app} />}
         </Container>

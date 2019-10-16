@@ -11,6 +11,7 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import Grid from "@material-ui/core/Grid";
 import EditIcon from "@material-ui/icons/EditTwoTone";
 import LinkTwoToneIcon from "@material-ui/icons/LinkTwoTone";
+import RecordVoiceOverIcon from "@material-ui/icons/RecordVoiceOver";
 import clsx from "clsx";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -104,15 +105,29 @@ export default function ResultadoBusca(props) {
                             <Typography component="h1" variant="h6" color="inherit" className={clsx(classes.title, classes.mesmoLinha)}>
                               {p.titulo}
                             </Typography>{" "}
-                            <Tooltip title={"Copiar link do processo para área de transferência"}><LinkTwoToneIcon alt="Copiar" className={classes.mesmoLinha} style={{cursor: 'pointer'}} onClick={(e)=>{
-                               const input = document.createElement('input');
-                               input.setAttribute('value', `${location.origin}?id=${p.id}`);
-                               document.body.appendChild(input);
-                               input.select();
-                               document.execCommand('copy');
-                               document.body.removeChild(input)
-                               props.app.mostraMensagem(`Link do procedimento copiado para a área de transferência`,null,null);
-                            }} />
+                            <Tooltip title={"Copiar link do processo para área de transferência"}>
+                              <LinkTwoToneIcon
+                                className={classes.mesmoLinha}
+                                style={{ cursor: "pointer" }}
+                                onClick={e => {
+                                  const input = document.createElement("input");
+                                  input.setAttribute("value", `${location.origin}?id=${p.id}`);
+                                  document.body.appendChild(input);
+                                  input.select();
+                                  document.execCommand("copy");
+                                  document.body.removeChild(input);
+                                  props.app.mostraMensagem(`Link do procedimento copiado para a área de transferência`, null, null);
+                                }}
+                              />
+                            </Tooltip>
+                            <Tooltip title={"Enviar sugestões ou informar problemas sobre este procedimento"}>
+                              <RecordVoiceOverIcon
+                                className={classes.mesmoLinha}
+                                style={{ cursor: "pointer" }}
+                                onClick={e => {
+                                  props.formComunicacao.current.abreForm(p);
+                                }}
+                              />
                             </Tooltip>
                           </div>
                           <b>Quando: </b>
