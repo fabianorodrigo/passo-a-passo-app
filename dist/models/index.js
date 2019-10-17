@@ -8,4 +8,6 @@ __export(require("./papel.model"));
 __export(require("./procedimento.model"));
 __export(require("./passo.model"));
 __export(require("./teste.model"));
+__export(require("./email.model"));
+__export(require("./comunicacao.model"));
 //# sourceMappingURL=index.js.map

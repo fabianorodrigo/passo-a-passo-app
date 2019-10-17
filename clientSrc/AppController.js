@@ -43,6 +43,15 @@ class AppController {
       camposObrigatorios: [{ atributo: 'titulo', label: 'Título' }],
       ordemCarga: ['titulo'],
     });
+    AppController.geraController({
+      app: this,
+      nomeEntidade: 'Comunicacao',
+      nomeEntidadePlural: 'Comunicacoes',
+      mantemState: false,
+      camposObrigatorios: [{ atributo: 'procedimento', label: 'Procedimento' },{ atributo: 'mensagem', label: 'Mensagem' }],
+      ordemCarga: ['data'],
+    });
+
   }
 
   /**

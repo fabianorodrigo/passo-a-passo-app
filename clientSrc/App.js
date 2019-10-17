@@ -107,7 +107,7 @@ class App extends Component {
         />
         <PopupProcedimento app={this._appController} formName="popupProcedimento" procedimento={this.state.dados.procedimentoPopup} />
         <FormPapel app={this._appController} formName="formPapel" />
-        <FormComunicacao app={this.props.app} ref={this.formComunicacao} />
+        <FormComunicacao app={this._appController} ref={this.formComunicacao} />
         <div className="App-body">
           <Main app={this._appController} dados={this.state.dados} formComunicacao={this.formComunicacao} />
         </div>
