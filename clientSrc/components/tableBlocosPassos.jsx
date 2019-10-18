@@ -184,12 +184,14 @@ export default function tableBlocosPassos(props) {
  */
 function getBlocoPassos(processo, app) {
   const retorno = [];
-  processo.passos.forEach((p, i) => {
-    if (i == 0 || p.idPapel != processo.passos[i - 1].idPapel) {
-      retorno.push({ papel: app.getState("Papeis")[p.idPapel], passos: [] });
-    }
-    retorno[retorno.length - 1].passos.push(p);
-  });
+  if (app.getState("Papeis") != null) {
+    processo.passos.forEach((p, i) => {
+      if (i == 0 || p.idPapel != processo.passos[i - 1].idPapel) {
+        retorno.push({ papel: app.getState("Papeis")[p.idPapel], passos: [] });
+      }
+      retorno[retorno.length - 1].passos.push(p);
+    });
+  }
   return retorno;
 }
 
