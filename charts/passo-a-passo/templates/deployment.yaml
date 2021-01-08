@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: passo-a-passo-webapp
+  namespace: passoapasso
+  labels:
+    {{- include "passo-a-passo.labels" . | nindent 4 }}
+spec:
+{{- if (.Values.deployment.replicaCount) and (.Values.deployment.autoscaling) and (not .Values.deployment.autoscaling.enabled) }}
+  replicas: {{ .Values.deployment.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "passo-a-passo.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "passo-a-passo.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if (.Values.serviceAccount) and (.Values.serviceAccount.create) and (.Values.serviceAccountName) -}}
+      serviceAccountName: {{ include "passo-a-passo.serviceAccountName" . }}
+      {{- end }}
+      {{- if .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          {{- if .Values.securityContext }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.deployment.container.ports }}
+          ports:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          env:
+            - name: MONGO_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: MONGO_HOST
+                  name: passo-a-passo-webapp
+            - name: MONGO_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: MONGO_PORT
+                  name: passo-a-passo-webapp
+            - name: MONGO_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  key: MONGO_DATABASE
+                  name: passo-a-passo-webapp
+            - name: MONGO_USER
+              valueFrom:
+                secretKeyRef:
+                  key: MONGO_USER
+                  name: passo-a-passo-webapp
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MONGO_PASSWORD
+                  name: passo-a-passo-webapp
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

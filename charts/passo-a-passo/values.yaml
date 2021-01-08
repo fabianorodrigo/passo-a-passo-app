@@ -1,0 +1,30 @@
+service:
+    type: ClusterIP
+    containerPort: 3000
+    targetPort: 3000
+
+image:
+    repository: fabianorodrigo/passo-a-passo-app
+    tag: 'latest'
+
+deployment:
+    replicaCount: 1
+    container:
+        ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+        variables:
+            configMap:
+                MONGO_HOST: localhost
+                MONGO_PORT: '5432'
+                MONGO_DATABASE: contractusapp
+            secret:
+                MONGO_USER: Y29udHJhY3R1c2FwcA==
+                MONGO_PASSWORD: Y29udHJhY3R1c2FwcA==
+
+istio:
+    gateway:
+        host: 'passoapasso.mydomain.com'
+        tls:
+            credentialName: istio-ingressgateway-domain-cert
