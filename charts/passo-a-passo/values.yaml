@@ -17,8 +17,8 @@ deployment:
         variables:
             configMap:
                 MONGO_HOST: localhost
-                MONGO_PORT: '5432'
-                MONGO_DATABASE: contractusapp
+                MONGO_PORT: '27017'
+                MONGO_DATABASE: passo-a-passo
             secret:
                 MONGO_USER: Y29udHJhY3R1c2FwcA==
                 MONGO_PASSWORD: Y29udHJhY3R1c2FwcA==
