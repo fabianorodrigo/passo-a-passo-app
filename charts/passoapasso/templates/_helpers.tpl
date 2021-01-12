@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "contractus.name" -}}
+{{- define "passoapasso.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -11,7 +11,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "contractus.fullname" -}}
+{{- define "passoapasso.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -27,16 +27,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "contractus.chart" -}}
+{{- define "passoapasso.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "contractus.labels" -}}
-helm.sh/chart: {{ include "contractus.chart" . }}
-{{ include "contractus.selectorLabels" . }}
+{{- define "passoapasso.labels" -}}
+helm.sh/chart: {{ include "passoapasso.chart" . }}
+{{ include "passoapasso.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -46,17 +46,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "contractus.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "contractus.name" . }}
+{{- define "passoapasso.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "passoapasso.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "contractus.serviceAccountName" -}}
+{{- define "passoapasso.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "contractus.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "passoapasso.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

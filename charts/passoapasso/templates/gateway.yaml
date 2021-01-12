@@ -1,11 +1,12 @@
-{{- if (.Values.istio) and (.Values.istio.gateway) -}}
+{{- if (.Values.istio) -}} 
+{{- if (.Values.istio.gateway) -}}
 apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
-  name: passo-a-passo-gateway
+  name: {{ .Release.Name }}-gateway
   namespace: passoapasso
   labels:
-    {{- include "passo-a-passo.labels" . | nindent 4 }}
+    {{- include "passoapasso.labels" . | nindent 4 }}
 spec:
   selector:
     istio: ingressgateway
@@ -27,4 +28,5 @@ spec:
       mode: SIMPLE
     hosts:
       - {{ .Values.istio.gateway.host | quote }}
+{{- end }}
 {{- end }}

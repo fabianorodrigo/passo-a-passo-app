@@ -4,7 +4,7 @@ service:
     targetPort: 3000
 
 image:
-    repository: fabianorodrigo/passo-a-passo-app
+    repository: fabianorodrigo/passoapasso-app
     tag: 'latest'
 
 deployment:
