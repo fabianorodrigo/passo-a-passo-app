@@ -18,7 +18,7 @@ deployment:
             configMap:
                 MONGO_HOST: localhost
                 MONGO_PORT: '27017'
-                MONGO_DATABASE: passo-a-passo
+                MONGO_DATABASE: passoapasso
             secret:
                 MONGO_USER: cGFzc29hcGFzc28K
                 MONGO_PASSWORD: cGFzc29hcGFzc28K
