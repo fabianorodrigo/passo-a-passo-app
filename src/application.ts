@@ -20,6 +20,8 @@ export class PassoAPassoAppApplication extends BootMixin(ServiceMixin(Repository
             host: process.env.MONGO_HOST || 'Variável de ambiente MONGO_HOST sem valor',
             port: process.env.MONGO_PORT || 'Variável de ambiente MONGO_PORT sem valor',
             database: process.env.MONGO_DATABASE || 'Variável de ambiente MONGO_DATABASE sem valor',
+            user: process.env.MONGO_USER || 'Variável de ambiente MONGO_USER sem valor',
+            password: process.env.MONGO_PASSWORD || 'Variável de ambiente MONGO_PASSWORD sem valor',
         });
 
         // Set up the custom sequence
