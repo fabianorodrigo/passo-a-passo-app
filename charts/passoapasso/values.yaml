@@ -4,7 +4,7 @@ service:
     targetPort: 3000
 
 image:
-    repository: fabianorodrigo/passoapasso-app
+    repository: fabianorodrigo/passo-a-passo-app
     tag: 'latest'
 
 deployment:
@@ -20,8 +20,8 @@ deployment:
                 MONGO_PORT: '27017'
                 MONGO_DATABASE: passo-a-passo
             secret:
-                MONGO_USER: Y29udHJhY3R1c2FwcA==
-                MONGO_PASSWORD: Y29udHJhY3R1c2FwcA==
+                MONGO_USER: cGFzc29hcGFzc28K
+                MONGO_PASSWORD: cGFzc29hcGFzc28K
 
 istio:
     gateway:

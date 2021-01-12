@@ -9,7 +9,7 @@ metadata:
     {{- include "passoapasso.labels" . | nindent 4 }}
 spec:
   gateways:
-    - passoapasso-gateway
+    - {{ .Release.Name }}-gateway
   hosts:
     - {{ .Values.istio.gateway.host | quote }}
   http:
