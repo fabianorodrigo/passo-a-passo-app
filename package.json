@@ -74,7 +74,7 @@
     "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
-    "@loopback/build": "^1.5.5",
+    "@loopback/build": "^9.0.4",
     "@loopback/testlab": "^1.10.3",
     "@loopback/tslint-config": "^2.0.4",
     "@types/node": "^10.17.50",
